@@ -38,7 +38,6 @@ public class EmpresaFavDB extends SQLiteOpenHelper{
     public long save(Empresa empresa){
         long id;
         SQLiteDatabase db = getWritableDatabase();
-
         try {
             ContentValues values = new ContentValues();
             values.put("id", empresa.getId());
