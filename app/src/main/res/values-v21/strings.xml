@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Busca Preço</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Sobre</string>
+    <string name="empresa">Empresas</string>
+    <string name="categoria">Categoria</string>
+    <string name="action_search">Pesquisar</string>
+
+    <string name="about_dialog_text">
+    <![CDATA[
+        <b>Aplicativo Busca Preço</b><br><br/>
+        Versao %s<br><br>
+        Criado por: Wagner Dutra<br/><br/>
+        <b>Contato:</b><br/><br/>
+        Facebook: <a href="https://www.facebook.com/wagnerdutra10">https://www.facebook.com/wagnerdutra10</a><br><br>
+        Telefone: (35)9912-71878
+    \]]>
+    </string>
+
+    <string name="about_dialog_title">Informações</string>
+    <string name="ok">Ok</string>
+    <string name="action_codigoBarras">Ler código de barras</string>
+</resources>
