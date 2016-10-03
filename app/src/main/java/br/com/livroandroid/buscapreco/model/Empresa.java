@@ -25,6 +25,7 @@ public class Empresa implements Parcelable {
     private String tipo;
     private String horaInicio;
     private String horaFim;
+    private String urlFoto;
     private boolean isSelected;
 
     public Empresa() {
@@ -45,6 +46,7 @@ public class Empresa implements Parcelable {
         tipo = in.readString();
         horaInicio = in.readString();
         horaFim = in.readString();
+        urlFoto = in.readString();
         isSelected = in.readByte() != 0;
     }
 
@@ -64,20 +66,13 @@ public class Empresa implements Parcelable {
         dest.writeString(tipo);
         dest.writeString(horaInicio);
         dest.writeString(horaFim);
+        dest.writeString(urlFoto);
         dest.writeByte((byte) (isSelected ? 1 : 0));
     }
 
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    public String getBairro() {
-        return bairro;
-    }
-
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
     }
 
     public static final Empresa.Creator<Empresa> CREATOR = new Creator<Empresa>() {
@@ -93,7 +88,6 @@ public class Empresa implements Parcelable {
     };
 
     public long getId() {
-
         return id;
     }
 
@@ -131,6 +125,14 @@ public class Empresa implements Parcelable {
 
     public void setNumero(int numero) {
         this.numero = numero;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
     }
 
     public String getCidade() {
@@ -197,6 +199,14 @@ public class Empresa implements Parcelable {
         this.horaFim = horaFim;
     }
 
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
+    }
+
     public boolean isSelected() {
         return isSelected;
     }
@@ -204,6 +214,8 @@ public class Empresa implements Parcelable {
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
+
+
 
     /*public static List<Empresa> getEmpresas(){
         List<Empresa> empresas = new ArrayList<>();

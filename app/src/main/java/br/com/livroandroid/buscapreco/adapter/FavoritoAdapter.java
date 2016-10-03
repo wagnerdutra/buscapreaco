@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -54,42 +57,58 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Empres
     public void onBindViewHolder(final EmpresasViewHolder holder, final int position) {
         Empresa e = empresas.get(position);
 
-        switch (e.getTipo()){
-            case "Supermercado":{
-                holder.imagem.setImageResource(R.drawable.supermercado);
-                break;
-            }
-            case "Açougue":{
-                holder.imagem.setImageResource(R.drawable.acougue);
-                break;
-            }
-            case "Restaurante":{
-                holder.imagem.setImageResource(R.drawable.restaurante);
-                break;
-            }
-            case "Lanchonete":{
-                holder.imagem.setImageResource(R.drawable.lanchonete);
-                break;
-            }
-            case "Pizzaria":{
-                holder.imagem.setImageResource(R.drawable.pizzaria);
-                break;
-            }
-            case "Cervejaria":{
-                holder.imagem.setImageResource(R.drawable.cervejaria);
-                break;
-            }
-            case "Materiais":{
-                holder.imagem.setImageResource(R.drawable.materiais);
-                break;
-            }
-            case "Farmacia":{
-                holder.imagem.setImageResource(R.drawable.farmacia);
-                break;
-            }
-            case "Lojas":{
-                holder.imagem.setImageResource(R.drawable.loja);
-                break;
+        if (!e.getUrlFoto().equals("")){
+            holder.progressBar.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(e.getUrlFoto()).fit().into(holder.imagem,
+                new com.squareup.picasso.Callback(){
+                    @Override
+                    public void onSuccess() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+                });
+        } else {
+            switch (e.getTipo()){
+                case "Supermercado":{
+                    holder.imagem.setImageResource(R.drawable.supermercado);
+                    break;
+                }
+                case "Açougue":{
+                    holder.imagem.setImageResource(R.drawable.acougue);
+                    break;
+                }
+                case "Restaurante":{
+                    holder.imagem.setImageResource(R.drawable.restaurante);
+                    break;
+                }
+                case "Lanchonete":{
+                    holder.imagem.setImageResource(R.drawable.lanchonete);
+                    break;
+                }
+                case "Pizzaria":{
+                    holder.imagem.setImageResource(R.drawable.pizzaria);
+                    break;
+                }
+                case "Cervejaria":{
+                    holder.imagem.setImageResource(R.drawable.cervejaria);
+                    break;
+                }
+                case "Materiais":{
+                    holder.imagem.setImageResource(R.drawable.materiais);
+                    break;
+                }
+                case "Farmacia":{
+                    holder.imagem.setImageResource(R.drawable.farmacia);
+                    break;
+                }
+                case "Lojas":{
+                    holder.imagem.setImageResource(R.drawable.loja);
+                    break;
+                }
             }
         }
 
@@ -140,6 +159,7 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Empres
         public CheckBox checkBox;
         public ImageView imagem;
         public TextView eTipo;
+        public ProgressBar progressBar;
 
         public EmpresasViewHolder(View view) {
             super(view);
@@ -153,6 +173,7 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Empres
             eHora = (TextView) view.findViewById(R.id.eHora);
             eTipo = (TextView) view.findViewById(R.id.eTipo);
             checkBox = (CheckBox) view.findViewById(R.id.chFav);
+            progressBar = (ProgressBar) view.findViewById(R.id.progress);
         }
     }
 }

@@ -25,7 +25,7 @@ import livroandroid.lib.utils.Prefs;
 
 public class EmpresaService {
 
-    private static final String url = "http://192.168.137.1:8080/buscapreco/rest/empresas";
+    private static final String url = "http://192.168.1.107:8080/buscapreco/rest/empresas";
     private static final String TAG = "EmpresaService";
     private static final boolean LOG_ON = false;
 
@@ -99,6 +99,7 @@ public class EmpresaService {
                     c.setTipo(jsonEmpresa.optString("tipo"));
                     c.setHoraInicio(jsonEmpresa.optString("horaInicio"));
                     c.setHoraFim(jsonEmpresa.optString("horaFim"));
+                    c.setUrlFoto(jsonEmpresa.optString("urlFoto"));
 
                     if (LOG_ON) {
                         Log.d(TAG, "Carro " + c.getNome() + " > " + c.getCidade());

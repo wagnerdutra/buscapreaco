@@ -18,15 +18,39 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imgTipoEmpresa"
-                android:layout_marginTop="2dp"
-                android:layout_width="90dp"
-                android:layout_height="90dp"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="90dp">
+
+                <!--
+                <ImageView
+                    android:id="@+id/imgTipoEmpresa"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                -->
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imgTipoEmpresa"
+                    app:civ_border_color="#EEEEEE"
+                    app:civ_border_width="1dp"
+                    app:civ_shadow="true"
+                    app:civ_shadow_radius="10"/>
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/progress"
+                    style="@android:style/Widget.ProgressBar.Small"
+                    android:layout_gravity="center|center_vertical"
+                    android:visibility="invisible"/>
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/eTipo"

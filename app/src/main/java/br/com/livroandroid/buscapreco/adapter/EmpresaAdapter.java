@@ -12,7 +12,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -75,42 +78,58 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             final EmpresasViewHolder empresasViewHolder = (EmpresasViewHolder) holder;
 
-            switch (e.getTipo()){
-                case "Supermercado":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.supermercado);
-                    break;
-                }
-                case "Açougue":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.acougue);
-                    break;
-                }
-                case "Restaurante":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.restaurante);
-                    break;
-                }
-                case "Lanchonete":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.lanchonete);
-                    break;
-                }
-                case "Pizzaria":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.pizzaria);
-                    break;
-                }
-                case "Cervejaria":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.cervejaria);
-                    break;
-                }
-                case "Materiais":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.materiais);
-                    break;
-                }
-                case "Farmacia":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.farmacia);
-                    break;
-                }
-                case "Lojas":{
-                    empresasViewHolder.imagem.setImageResource(R.drawable.loja);
-                    break;
+            if (!e.getUrlFoto().equals("")){
+                empresasViewHolder.progressBar.setVisibility(View.VISIBLE);
+                Picasso.with(context).load(e.getUrlFoto()).fit().into(empresasViewHolder.imagem,
+                    new com.squareup.picasso.Callback(){
+                        @Override
+                        public void onSuccess() {
+                            empresasViewHolder.progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            empresasViewHolder.progressBar.setVisibility(View.GONE);
+                        }
+                    });
+            } else {
+                switch (e.getTipo()){
+                    case "Supermercado":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.supermercado);
+                        break;
+                    }
+                    case "Açougue":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.acougue);
+                        break;
+                    }
+                    case "Restaurante":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.restaurante);
+                        break;
+                    }
+                    case "Lanchonete":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.lanchonete);
+                        break;
+                    }
+                    case "Pizzaria":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.pizzaria);
+                        break;
+                    }
+                    case "Cervejaria":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.cervejaria);
+                        break;
+                    }
+                    case "Materiais":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.materiais);
+                        break;
+                    }
+                    case "Farmacia":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.farmacia);
+                        break;
+                    }
+                    case "Lojas":{
+                        empresasViewHolder.imagem.setImageResource(R.drawable.loja);
+                        break;
+                    }
                 }
             }
 
@@ -167,6 +186,7 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public CheckBox checkBox;
         public ImageView imagem;
         public TextView eTipo;
+        public ProgressBar progressBar;
 
         public EmpresasViewHolder(View view) {
             super(view);
@@ -180,6 +200,7 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             eHora = (TextView) view.findViewById(R.id.eHora);
             eTipo = (TextView) view.findViewById(R.id.eTipo);
             checkBox = (CheckBox) view.findViewById(R.id.chFav);
+            progressBar = (ProgressBar) view.findViewById(R.id.progress);
         }
     }
 

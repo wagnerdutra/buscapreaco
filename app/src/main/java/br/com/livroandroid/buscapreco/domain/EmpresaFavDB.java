@@ -26,7 +26,7 @@ public class EmpresaFavDB extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "Criando tabela...");
         db.execSQL("create table if not exists favoritos (id integer primary key,nome text,cnpj text,rua text,numero text,bairro text," +
-                "cidade text, estado text,cep text, tel text,senha text,email text,tipo text,hora_Inicio text,hora_Fim text);");
+                "cidade text, estado text,cep text, tel text,senha text,email text,tipo text,hora_Inicio text,hora_Fim text,url_Foto text);");
         Log.d(TAG,"Tabela criada");
     }
 
@@ -54,6 +54,7 @@ public class EmpresaFavDB extends SQLiteOpenHelper{
             values.put("tipo", empresa.getTipo());
             values.put("hora_Inicio", empresa.getHoraFim());
             values.put("hora_Fim", empresa.getHoraFim());
+            values.put("url_Foto", empresa.getUrlFoto());
             Log.i(TAG, "Gravou "+empresa.getNome());
             id = db.insert("favoritos","", values);
             return id;
@@ -121,6 +122,7 @@ public class EmpresaFavDB extends SQLiteOpenHelper{
                 empresa.setTipo(c.getString(c.getColumnIndex("tipo")));
                 empresa.setHoraInicio(c.getString(c.getColumnIndex("hora_Inicio")));
                 empresa.setHoraFim(c.getString(c.getColumnIndex("hora_Fim")));
+                empresa.setUrlFoto(c.getString(c.getColumnIndex("url_Foto")));
             } while (c.moveToNext());
         }
         return empresas;
