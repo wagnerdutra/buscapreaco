@@ -15,6 +15,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.livroandroid.buscapreco.Utils.HttpPost;
@@ -25,7 +26,7 @@ import livroandroid.lib.utils.Prefs;
 
 public class EmpresaService {
 
-    private static final String url = "http://192.168.1.107:8080/buscapreco/rest/empresas";
+    private static final String url = "http://192.168.1.104:8080/buscapreco/rest/empresas";
     private static final String TAG = "EmpresaService";
     private static final boolean LOG_ON = false;
 
@@ -35,11 +36,18 @@ public class EmpresaService {
             cidade = " ";
             estado = " ";
         }
+
+        String cidadeTemp = cidade;
+        String estadoTemp = estado;
+
         cidade = Utils.encodeString(cidade);
         estado = Utils.encodeString(estado);
         String json = http.doGet(url+"/cidade/"+cidade+"/estado/"+estado+"/categoria/"+categoria);
         Log.i("url",url+"/cidade/"+cidade+"/estado/"+estado+"/categoria/"+categoria);
         List<Empresa> empresas = parserJSON(context,json);
+        if (json!=null) {
+            salvaHoraData(context,cidadeTemp,estadoTemp);
+        }
         return empresas;
     }
 
@@ -50,12 +58,35 @@ public class EmpresaService {
             estado = " ";
         }
 
+        String cidadeTemp = cidade;
+        String estadoTemp = estado;
+
         cidade = Utils.encodeString(cidade);
         estado = Utils.encodeString(estado);
         Log.i("TESTE",url+"/cidade/"+cidade+"/estado/"+estado);
         String json = http.doGet(url+"/cidade/"+cidade+"/estado/"+estado);
         List<Empresa> empresas = parserJSON(context,json);
+
+        if (json!=null) {
+            salvaHoraData(context,cidadeTemp,estadoTemp);
+        }
         return empresas;
+    }
+
+    public static void salvaHoraData(Context context, String cidade, String estado){
+        Calendar c = Calendar.getInstance();
+        int day, month, year, hora, minuto, segundos;
+        String dataHora;
+        day = c.get(Calendar.DAY_OF_MONTH);
+        month = c.get(Calendar.MONTH);
+        year = c.get(Calendar.YEAR);
+        hora = c.get(Calendar.HOUR);
+        minuto = c.get(Calendar.MINUTE);
+        segundos = c.get(Calendar.SECOND);
+        dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
+        String path = "dh".concat(cidade).concat(estado);
+        Prefs.setString(context, path, dataHora);
+        Log.i("DATAHORA MODIF ",path);
     }
 
     public static void salvarEmpresaFav(Context context, Empresa empresa){

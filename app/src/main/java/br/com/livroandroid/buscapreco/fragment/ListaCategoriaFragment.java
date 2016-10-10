@@ -77,6 +77,7 @@ public class ListaCategoriaFragment extends BaseFragment {
             public void onRefresh() {
                 //Valida se existe conexão
                 if (AndroidUtils.isNetworkAvailable(getContext())) {
+                    BuscaPrecoApplication.getInstance().setNeedToUpdate("empresa",true);
                     taskEmpresas(true);
                 }else {
                     swipeRefreshLayout.setRefreshing(false);

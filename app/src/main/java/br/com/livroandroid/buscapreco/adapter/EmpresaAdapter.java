@@ -72,12 +72,15 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Empresa e = Empresas.get(0);
             CidadeViewHolder cidadeViewHolder = (CidadeViewHolder) holder;
             //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
-            cidadeViewHolder.tvCidade.setText(e.getCidade().concat(" - "+e.getEstado()));
+            cidadeViewHolder.tvCidade.setText(e.getCidade().concat(" - "+e.getEstado()+" " +
+                "\n\nÚltima atualização: "+ Prefs.getString(context, "dh"+e.getCidade()+e.getEstado())+"\n"));
+            Log.i("VERIFICANDO DENTRO","dh"+e.getCidade()+e.getEstado());
         } else {
             Empresa e = Empresas.get(position-1);
 
             final EmpresasViewHolder empresasViewHolder = (EmpresasViewHolder) holder;
 
+            String teste;
             if (!e.getUrlFoto().equals("")){
                 empresasViewHolder.progressBar.setVisibility(View.VISIBLE);
                 Picasso.with(context).load(e.getUrlFoto()).fit().into(empresasViewHolder.imagem,
@@ -85,6 +88,7 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         @Override
                         public void onSuccess() {
                             empresasViewHolder.progressBar.setVisibility(View.GONE);
+
                         }
 
                         @Override

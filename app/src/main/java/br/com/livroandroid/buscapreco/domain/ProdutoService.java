@@ -9,14 +9,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.livroandroid.buscapreco.model.Produto;
 import livroandroid.lib.utils.HttpHelper;
+import livroandroid.lib.utils.Prefs;
 
 public class ProdutoService {
 
-    private static final String url = "http://192.168.1.107:8080/buscapreco/rest/produtos";
+    private static final String url = "http://192.168.1.104:8080/buscapreco/rest/produtos";
     private static final String TAG = "ProdutoService";
     private static final boolean LOG_ON = false;
 
@@ -59,7 +61,7 @@ public class ProdutoService {
                     p.setPrecoPromocao(Float.parseFloat(jsonProduto.optString("precoPromocao")));
                     p.setUnidade(jsonProduto.optString("unidade"));
                     p.setCodBarras(jsonProduto.optString("codBarras"));
-
+                    p.setUrlFoto(jsonProduto.optString("urlFoto"));
                     if (LOG_ON) {
                         Log.d(TAG, "Carro " + p.getNome() + " > " + p.getPrecoVista());
                     }
@@ -73,5 +75,21 @@ public class ProdutoService {
             }
             return produtos;
         }else return null;
+    }
+
+    public static void salvaHoraData(Context context, String cidade, String estado){
+        Calendar c = Calendar.getInstance();
+        int day, month, year, hora, minuto, segundos;
+        String dataHora;
+        day = c.get(Calendar.DAY_OF_MONTH);
+        month = c.get(Calendar.MONTH);
+        year = c.get(Calendar.YEAR);
+        hora = c.get(Calendar.HOUR);
+        minuto = c.get(Calendar.MINUTE);
+        segundos = c.get(Calendar.SECOND);
+        dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
+        String path = "dhp".concat(cidade).concat(estado);
+        Prefs.setString(context, path, dataHora);
+        Log.i("DATAHORA MODIF ",path);
     }
 }

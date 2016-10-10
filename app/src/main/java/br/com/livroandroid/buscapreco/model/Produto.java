@@ -17,6 +17,7 @@ public class Produto implements Parcelable{
     private float precoPromocao;
     private String unidade;
     private String codBarras;
+    private String urlFoto;
     private boolean isChecked;
     private float qtd;
     private boolean selected;
@@ -31,30 +32,13 @@ public class Produto implements Parcelable{
         precoPromocao = in.readFloat();
         unidade = in.readString();
         codBarras = in.readString();
+        urlFoto = in.readString();
         isChecked = in.readByte() != 0;
         qtd = in.readFloat();
         selected = in.readByte() != 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(nome);
-        dest.writeFloat(precoVista);
-        dest.writeFloat(precoPromocao);
-        dest.writeString(unidade);
-        dest.writeString(codBarras);
-        dest.writeByte((byte) (isChecked ? 1 : 0));
-        dest.writeFloat(qtd);
-        dest.writeByte((byte) (selected ? 1 : 0));
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Produto.Creator<Produto> CREATOR = new Creator<Produto>() {
+    public static final Creator<Produto> CREATOR = new Creator<Produto>() {
         @Override
         public Produto createFromParcel(Parcel in) {
             return new Produto(in);
@@ -65,6 +49,25 @@ public class Produto implements Parcelable{
             return new Produto[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeString(nome);
+        parcel.writeFloat(precoVista);
+        parcel.writeFloat(precoPromocao);
+        parcel.writeString(unidade);
+        parcel.writeString(codBarras);
+        parcel.writeString(urlFoto);
+        parcel.writeByte((byte) (isChecked ? 1 : 0));
+        parcel.writeFloat(qtd);
+        parcel.writeByte((byte) (selected ? 1 : 0));
+    }
 
     public long getId() {
         return id;
@@ -112,6 +115,14 @@ public class Produto implements Parcelable{
 
     public void setCodBarras(String codBarras) {
         this.codBarras = codBarras;
+    }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
     }
 
     public boolean isChecked() {
@@ -174,5 +185,4 @@ public class Produto implements Parcelable{
         produtos.add(new Produto((long)1,empresa,"Tinta Cabelo",7,5,"Un","0000000000000"));
         return produtos;
     }*/
-
 }

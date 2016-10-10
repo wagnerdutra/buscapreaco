@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -60,6 +64,20 @@ public class SacolaProdutoAdapter extends RecyclerView.Adapter<SacolaProdutoAdap
         holder.checkBox.setChecked(p.isChecked());
         holder.pQtd.setText(String.valueOf(p.getQtd()));
 
+        holder.progressBar.setVisibility(View.VISIBLE);
+        Picasso.with(context).load(p.getUrlFoto()).fit().into(holder.imagem,
+                new com.squareup.picasso.Callback(){
+                    @Override
+                    public void onSuccess() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+                });
+
         if (onClickListener != null) {
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,6 +101,8 @@ public class SacolaProdutoAdapter extends RecyclerView.Adapter<SacolaProdutoAdap
         public TextView pPreco;
         public TextView pUnid;
         public TextView pQtd;
+        public ImageView imagem;
+        public ProgressBar progressBar;
         public CheckBox checkBox;
         private View view;
 
@@ -95,6 +115,8 @@ public class SacolaProdutoAdapter extends RecyclerView.Adapter<SacolaProdutoAdap
             pUnid = (TextView) view.findViewById(R.id.txUn);
             pQtd = (TextView) view.findViewById(R.id.tvQtdNum);
             checkBox = (CheckBox) view.findViewById(R.id.checkbox);
+            imagem = (ImageView) view.findViewById(R.id.imgProduto);
+            progressBar = (ProgressBar) view.findViewById(R.id.progress);
         }
     }
 }

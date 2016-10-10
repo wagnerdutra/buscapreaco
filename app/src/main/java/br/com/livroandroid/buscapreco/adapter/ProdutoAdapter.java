@@ -7,7 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -58,6 +62,20 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.Produtos
             holder.pPreco.setText(String.valueOf(p.getPrecoVista()));
         holder.pUnid.setText(p.getUnidade());
 
+        holder.progressBar.setVisibility(View.VISIBLE);
+        Picasso.with(context).load(p.getUrlFoto()).fit().into(holder.imagem,
+                new com.squareup.picasso.Callback(){
+                    @Override
+                    public void onSuccess() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        holder.progressBar.setVisibility(View.GONE);
+                    }
+                });
+
         //Click
         if (onClickListener != null) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -96,6 +114,8 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.Produtos
         public TextView pUnid;
         public CardView cardView;
         public TextView pCedula;
+        public ImageView imagem;
+        public ProgressBar progressBar;
         private View view;
 
         public ProdutosViewHolder(View view) {
@@ -107,6 +127,8 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.Produtos
             pPreco = (TextView) view.findViewById(R.id.txPrec);
             pUnid = (TextView) view.findViewById(R.id.txUn);
             pCedula = (TextView) view.findViewById(R.id.tvCedula);
+            imagem = (ImageView) view.findViewById(R.id.imgProduto);
+            progressBar = (ProgressBar) view.findViewById(R.id.progress);
         }
     }
 }

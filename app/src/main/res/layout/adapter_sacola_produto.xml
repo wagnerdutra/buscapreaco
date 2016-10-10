@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="92dp"
     android:layout_margin="6dp"
     android:foreground="?attr/selectableItemBackground"
     app:cardElevation="3dp"
@@ -17,6 +17,28 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
+        <FrameLayout
+            android:layout_width="90dp"
+            android:layout_height="match_parent">
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imgProduto"
+                app:civ_border_color="#EEEEEE"
+                app:civ_border_width="1dp"
+                app:civ_shadow="true"
+                app:civ_shadow_radius="10"/>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress"
+                style="@android:style/Widget.ProgressBar.Small"
+                android:layout_gravity="center|center_vertical"
+                android:visibility="invisible"/>
+        </FrameLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -26,14 +48,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/txNome"
-                    android:fontFamily="casual"
+                    android:fontFamily="cursive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/colorPrimary"
                     android:text="Nome: "
@@ -46,31 +68,35 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/tvCedula"
+                    android:fontFamily="cursive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_gravity="bottom"
-                    android:textSize="50sp"
+                    android:textSize="30sp"
+                    android:textColor="@color/colorPrimary"
                     android:text="R$"/>
 
                 <TextView
-                    android:textColor="@color/colorPrimary"
                     android:id="@+id/txPrec"
+                    android:fontFamily="cursive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="bottom"
-                    android:textSize="50sp"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="30sp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/colorPrimary"
                     android:text="2,00"/>
 
                 <TextView
-                    android:textColor="@color/colorPrimary"
                     android:id="@+id/txUn"
+                    android:fontFamily="cursive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_gravity="bottom"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"
                     android:text="KG"/>
             </LinearLayout>
         </LinearLayout>
@@ -84,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="QTD: "
+                android:text="Qtd: "
                 android:layout_marginBottom="6dp"/>
 
             <TextView

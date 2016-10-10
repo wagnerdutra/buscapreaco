@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,9 +31,11 @@ import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.Utils.AnyOrientationCaptureActivity;
 import br.com.livroandroid.buscapreco.activity.ListaProduto;
 import br.com.livroandroid.buscapreco.adapter.ProdutoAdapter;
+import br.com.livroandroid.buscapreco.domain.EmpresaService;
 import br.com.livroandroid.buscapreco.domain.ProdutoService;
 import br.com.livroandroid.buscapreco.model.Empresa;
 import br.com.livroandroid.buscapreco.model.Produto;
+import livroandroid.lib.utils.AndroidUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +47,7 @@ public class ProdutosFragment extends BaseFragment {
     private ProdutoAdapter produtoAdapter;
     private LinearLayoutManager linearLayoutManager;
     private Empresa empresa;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private ActionMode actionMode;
     private String text="";
     private boolean tipo;
@@ -85,17 +89,39 @@ public class ProdutosFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener());
         recyclerView.setAdapter(produtoAdapter);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeToRefresh);
+        swipeRefreshLayout.setOnRefreshListener(OnRefreshListener());
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.blue,
+                R.color.green,
+                R.color.refresh_progress_3);
         return view;
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener OnRefreshListener(){
+        return new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Valida se existe conexão
+                if (AndroidUtils.isNetworkAvailable(getContext())) {
+                    taskProdutos(true);
+                }else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    alert(R.string.error_conexao_indisponivel);
+                }
+            }
+        };
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        taskProdutos();
+        taskProdutos(false);
     }
 
-    private void taskProdutos(){
-        startTask("produtos", new GetProdutoTask(), R.id.progress);
+    private void taskProdutos(boolean pullToRefresh){
+        startTask("produtos", new GetProdutoTask(), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
     }
 
     private class GetProdutoTask implements TaskListener<List<Produto>>{

@@ -84,10 +84,14 @@ public class ListaEmpresaFragment extends BaseFragment {
                 }else
                     BuscaPrecoApplication.getInstance().setNeedToUpdate("empresa",true);
 
-                if (cb.isChecked())
-                    EmpresaService.salvarEmpresaFav(getContext(),e);
-                else
-                    EmpresaService.deletarEmpresaFav(getContext(),e);
+                if (cb.isChecked()) {
+                    EmpresaService.salvarEmpresaFav(getContext(), e);
+                    toast("Empresa adicionada aos favoritos!");
+                }
+                else {
+                    EmpresaService.deletarEmpresaFav(getContext(), e);
+                    toast("Empresa removida dos favoritos!");
+                }
             }
 
             @Override
