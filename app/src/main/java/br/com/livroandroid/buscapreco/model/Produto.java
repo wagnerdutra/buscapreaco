@@ -12,6 +12,7 @@ import java.util.List;
 public class Produto implements Parcelable{
 
     private long id;
+    private long idEmpresa;
     private String nome;
     private float precoVista;
     private float precoPromocao;
@@ -27,6 +28,7 @@ public class Produto implements Parcelable{
 
     protected Produto(Parcel in) {
         id = in.readLong();
+        idEmpresa = in.readLong();
         nome = in.readString();
         precoVista = in.readFloat();
         precoPromocao = in.readFloat();
@@ -38,7 +40,7 @@ public class Produto implements Parcelable{
         selected = in.readByte() != 0;
     }
 
-    public static final Creator<Produto> CREATOR = new Creator<Produto>() {
+    public static final Produto.Creator<Produto> CREATOR = new Creator<Produto>() {
         @Override
         public Produto createFromParcel(Parcel in) {
             return new Produto(in);
@@ -58,6 +60,7 @@ public class Produto implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(id);
+        parcel.writeLong(idEmpresa);
         parcel.writeString(nome);
         parcel.writeFloat(precoVista);
         parcel.writeFloat(precoPromocao);
@@ -75,6 +78,14 @@ public class Produto implements Parcelable{
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(long idEmpresa) {
+        this.idEmpresa = idEmpresa;
     }
 
     public String getNome() {
@@ -147,6 +158,10 @@ public class Produto implements Parcelable{
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public static Creator<Produto> getCREATOR() {
+        return CREATOR;
     }
 
     /*public static List<Produto> getProdutos(Empresa empresa){

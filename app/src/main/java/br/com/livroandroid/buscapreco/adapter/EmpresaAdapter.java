@@ -24,7 +24,6 @@ import br.com.livroandroid.buscapreco.domain.EmpresaFavDB;
 import br.com.livroandroid.buscapreco.model.Empresa;
 import livroandroid.lib.utils.Prefs;
 
-
 public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected static final String TAG = "livroandroid";
     private final List<Empresa> Empresas;
@@ -74,6 +73,7 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
             cidadeViewHolder.tvCidade.setText(e.getCidade().concat(" - "+e.getEstado()+" " +
                 "\n\nÚltima atualização: "+ Prefs.getString(context, "dh"+e.getCidade()+e.getEstado())+"\n"));
+            Log.i("VERIFICANDO DENTRO","dh"+e.getCidade()+e.getEstado());
             Log.i("VERIFICANDO DENTRO","dh"+e.getCidade()+e.getEstado());
         } else {
             Empresa e = Empresas.get(position-1);

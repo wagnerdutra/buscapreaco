@@ -103,15 +103,21 @@ public class ListaCategoriaFragment extends BaseFragment {
     }
 
     private void taskEmpresas(boolean pullToRefresh){
-        startTask("empresas", new GetEmpresaTask(), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
+        startTask("empresas", new GetEmpresaTask(pullToRefresh), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
     }
 
     private class GetEmpresaTask implements TaskListener<List<Empresa>>{
+        boolean refresh;
+
+        public GetEmpresaTask(boolean refresh) {
+            this.refresh = refresh;
+        }
+
         @Override
         public List<Empresa> execute() throws Exception {
             return EmpresaService.getEmpresasCat(getContext(),categoria,
                     Prefs.getString(getContext(),"cidade"),
-                    Prefs.getString(getContext(),"estado"));
+                    Prefs.getString(getContext(),"estado"),refresh);
         }
 
         @Override

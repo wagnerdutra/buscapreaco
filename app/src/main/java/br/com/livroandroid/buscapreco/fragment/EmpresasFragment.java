@@ -155,15 +155,21 @@ public class EmpresasFragment extends BaseFragment {
         //empresas = Empresa.getEmpresas();
         //empresaAdapter = new EmpresaAdapter(getContext(), empresas, onClickEmpresa());
         //recyclerView.setAdapter(empresaAdapter);
-        startTask("empresas", new GetEmpresaTask(), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
+        startTask("empresas", new GetEmpresaTask(pullToRefresh), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
     }
 
     private class GetEmpresaTask implements TaskListener<List<Empresa>>{
+        private boolean refresh;
+
+        public GetEmpresaTask(boolean refresh) {
+            this.refresh = refresh;
+        }
+
         @Override
         public List<Empresa> execute() throws Exception {
             return EmpresaService.getEmpresas(getContext(),
                     cidade,
-                    estado);
+                    estado,refresh);
         }
 
         @Override

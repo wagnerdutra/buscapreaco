@@ -17,34 +17,113 @@ import java.util.List;
 
 import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.model.Produto;
+import livroandroid.lib.utils.Prefs;
 
 // Herda de RecyclerView.Adapter e declara o tipo genérico <ProdutoAdapter.ProdutosViewHolder>
-public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ProdutosViewHolder> {
+public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected static final String TAG = "livroandroid";
     private final List<Produto> Produtos;
     private final Context context;
     private final ProdutoOnClickListener onClickListener;
+    private boolean tipo;
 
     public interface ProdutoOnClickListener {
         public void onLongClickProduto(ProdutosViewHolder holder, int idx);
         public void onClickProduto(ProdutosViewHolder holder, int idx);
     }
 
-    public ProdutoAdapter(Context context, List<Produto> Produtos, ProdutoOnClickListener onClickListener) {
+    public ProdutoAdapter(Context context, List<Produto> Produtos, ProdutoOnClickListener onClickListener,boolean tipo) {
         this.context = context;
         this.Produtos = Produtos;
         this.onClickListener = onClickListener;
+        this.tipo = tipo;
     }
 
     @Override
-    public ProdutosViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public int getItemViewType(int position) {
+        return position;
+    }
 
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
+        RecyclerView.ViewHolder viewHolder;
         // Este método cria uma subclasse de RecyclerView.ViewHolder
         // Infla a view do layout
-        View view = LayoutInflater.from(context).inflate(R.layout.adapter_produto, viewGroup, false);
 
-        // Cria a classe do ViewHolder
-        return new ProdutosViewHolder(view);
+        if (viewType==0){
+            View view = LayoutInflater.from(context).inflate(R.layout.layout_nome_cidade, viewGroup, false);
+            viewHolder = new CidadeViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.adapter_produto, viewGroup, false);
+            viewHolder = new ProdutosViewHolder(view);
+        }
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if (holder.getItemViewType()==0){
+            CidadeViewHolder cidadeViewHolder = (CidadeViewHolder) holder;
+            //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
+            if (tipo)
+                cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhP")));
+            else
+                cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhPP")));
+
+            Log.i("VERIFICANDO DENTRO",Prefs.getString(context, "dhP"));
+        } else {
+
+            Produto p = Produtos.get(position-1);
+
+            final ProdutosViewHolder produtosViewHolder = (ProdutosViewHolder) holder;
+
+            produtosViewHolder.pNome.setText(p.getNome());
+            if (p.getPrecoPromocao() > 0)
+                produtosViewHolder.pPreco.setText(String.valueOf(p.getPrecoPromocao()));
+            else
+                produtosViewHolder.pPreco.setText(String.valueOf(p.getPrecoVista()));
+            produtosViewHolder.pUnid.setText(p.getUnidade());
+
+            produtosViewHolder.progressBar.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(p.getUrlFoto()).fit().into(produtosViewHolder.imagem,
+                    new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            produtosViewHolder.progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            produtosViewHolder.progressBar.setVisibility(View.GONE);
+                        }
+                    });
+
+            //Click
+            if (onClickListener != null) {
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        onClickListener.onLongClickProduto(produtosViewHolder, position);
+                        return false;
+                    }
+                });
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onClickListener.onClickProduto(produtosViewHolder, position);
+                    }
+                });
+            }
+
+            int corFundo = context.getResources().getColor(p.isSelected() ? R.color.colorPrimary : R.color.white);
+            produtosViewHolder.cardView.setCardBackgroundColor(corFundo);
+            int corFonte = context.getResources().getColor(p.isSelected() ? R.color.white : R.color.colorPrimary);
+            produtosViewHolder.pNome.setTextColor(corFonte);
+            produtosViewHolder.pPreco.setTextColor(corFonte);
+            produtosViewHolder.pUnid.setTextColor(corFonte);
+            produtosViewHolder.pCedula.setTextColor(corFonte);
+        }
     }
 
     public List<Produto> getProdutos(){
@@ -52,59 +131,8 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.Produtos
     }
 
     @Override
-    public void onBindViewHolder(final ProdutosViewHolder holder, final int position) {
-
-        Produto p = Produtos.get(position);
-
-        holder.pNome.setText(p.getNome());
-        if (p.getPrecoPromocao()>0)
-            holder.pPreco.setText(String.valueOf(p.getPrecoPromocao())); else
-            holder.pPreco.setText(String.valueOf(p.getPrecoVista()));
-        holder.pUnid.setText(p.getUnidade());
-
-        holder.progressBar.setVisibility(View.VISIBLE);
-        Picasso.with(context).load(p.getUrlFoto()).fit().into(holder.imagem,
-                new com.squareup.picasso.Callback(){
-                    @Override
-                    public void onSuccess() {
-                        holder.progressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError() {
-                        holder.progressBar.setVisibility(View.GONE);
-                    }
-                });
-
-        //Click
-        if (onClickListener != null) {
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    onClickListener.onLongClickProduto(holder, position);
-                    return false;
-                }
-            });
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClickListener.onClickProduto(holder, position);
-                }
-            });
-        }
-
-        int corFundo = context.getResources().getColor(p.isSelected() ? R.color.colorPrimary : R.color.white);
-        holder.cardView.setCardBackgroundColor(corFundo);
-        int corFonte = context.getResources().getColor(p.isSelected() ? R.color.white : R.color.colorPrimary);
-        holder.pNome.setTextColor(corFonte);
-        holder.pPreco.setTextColor(corFonte);
-        holder.pUnid.setTextColor(corFonte);
-        holder.pCedula.setTextColor(corFonte);
-    }
-
-    @Override
     public int getItemCount() {
-        return this.Produtos != null ? this.Produtos.size() : 0;
+        return this.Produtos != null ? this.Produtos.size()+1: 0;
     }
 
     // Subclasse de RecyclerView.ViewHolder. Contém todas as views.
@@ -129,6 +157,18 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.Produtos
             pCedula = (TextView) view.findViewById(R.id.tvCedula);
             imagem = (ImageView) view.findViewById(R.id.imgProduto);
             progressBar = (ProgressBar) view.findViewById(R.id.progress);
+        }
+    }
+
+    public static class CidadeViewHolder extends RecyclerView.ViewHolder {
+        public TextView tvCidade;
+        private View view;
+
+        public CidadeViewHolder(View view) {
+            super(view);
+            this.view = view;
+
+            tvCidade = (TextView) view.findViewById(R.id.tvCidade);
         }
     }
 }

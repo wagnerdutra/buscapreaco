@@ -22,74 +22,171 @@ public class ProdutoService {
     private static final String TAG = "ProdutoService";
     private static final boolean LOG_ON = false;
 
-    /*public static List<Produto> getProdutos(Context context){
-        List<Produto> produtos = new ArrayList<>();
-        /for (int i=0;i<20;i++){
-            Produto p = new Produto();
-            p.nome = "Produto "+i;
-            p.preco = "Preço "+i;
-            produtos.add(p);
-        }/
+    public static List<Produto> getProdutosByEmpresa(Context context, Long id, boolean refresh) throws IOException, JSONException {
+        List<Produto> produtos;
+
+        boolean buscaNoBancoDeDados = !refresh;
+
+        if (buscaNoBancoDeDados) {
+            produtos = getProdutosFromBanco(context, id);
+            if (produtos!=null && produtos.size()>0){
+                return produtos;
+            }
+        }
+
+        produtos = getProdutosFromWebService(context, id);
         return produtos;
     }
-    */
 
-    public static List<Produto> getProdutosByEmpresa(Context context, Long id) throws IOException, JSONException {
-        HttpHelper http = new HttpHelper();
-        String json = http.doGet(url.concat("/empresa/"+id));
-        return parserJSON(context,json);
-    }
-
-    public static List<Produto> getProdutosByEmpresaPromocao(Context context, Long id) throws IOException, JSONException {
-        HttpHelper http = new HttpHelper();
-        String json = http.doGet(url.concat("/empresa/promocao/"+id));
-        return parserJSON(context,json);
-    }
-
-    private static List<Produto> parserJSON(Context context, String json) throws IOException, JSONException {
-        List<Produto> produtos = new ArrayList<Produto>();
-        if (json.length()>5){
-            try {
-                JSONArray jsonArray = new JSONArray(json);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonProduto = jsonArray.getJSONObject(i);
-                    Produto p = new Produto();
-
-                    p.setId(jsonProduto.optInt("id"));
-                    p.setNome(jsonProduto.optString("nome"));
-                    p.setPrecoVista(Float.parseFloat(jsonProduto.optString("precoVista")));
-                    p.setPrecoPromocao(Float.parseFloat(jsonProduto.optString("precoPromocao")));
-                    p.setUnidade(jsonProduto.optString("unidade"));
-                    p.setCodBarras(jsonProduto.optString("codBarras"));
-                    p.setUrlFoto(jsonProduto.optString("urlFoto"));
-                    if (LOG_ON) {
-                        Log.d(TAG, "Carro " + p.getNome() + " > " + p.getPrecoVista());
-                    }
-                    produtos.add(p);
-                }
-                if (LOG_ON) {
-                    Log.d(TAG, produtos.size() + " encontrados.");
-                }
-            } catch (JSONException e) {
-                throw new IOException(e.getMessage(), e);
-            }
+    private static List<Produto> getProdutosFromBanco(Context context, Long idEmpresa) {
+        ProdutoDB db = new ProdutoDB(context);
+        try {
+            List<Produto> produtos = db.findByEmpresa(idEmpresa);
+            Log.d(TAG,"Retornando " + produtos.size() + " produtos do banco");
             return produtos;
-        }else return null;
+        } finally {
+            db.close();
+        }
     }
 
-    public static void salvaHoraData(Context context, String cidade, String estado){
+    private static List<Produto> getProdutosFromWebService(Context context, Long idEmpresa) throws IOException, JSONException {
+        HttpHelper http = new HttpHelper();
+        String json = http.doGet(url.concat("/empresa/"+idEmpresa));
+        if (json!=null && json.length()>5) {
+            List<Produto> produtos = parserJSON(context, json, idEmpresa);
+            salvarProdutoByEmpresa(context, produtos, idEmpresa);
+            salvaHoraData(context);
+            return produtos;
+        } else {
+            return null;
+        }
+    }
+
+    public static List<Produto> getProdutosByEmpresaPromocao(Context context, Long idEmpresa, boolean refresh) throws IOException, JSONException {
+        List<Produto> produtos;
+
+        boolean buscaNoBancoDeDados = !refresh;
+
+        if (buscaNoBancoDeDados) {
+            produtos = getProdutosPromocaoFromBanco(context, idEmpresa);
+            if (produtos!=null && produtos.size()>0){
+                return produtos;
+            }
+        }
+
+        produtos = getProdutosPromocaoFromWebService(context, idEmpresa);
+        return produtos;
+    }
+
+    private static List<Produto> getProdutosPromocaoFromBanco(Context context, Long idEmpresa) {
+        ProdutoDB db = new ProdutoDB(context);
+        try {
+            List<Produto> produtos = db.findByEmpresaPromocao(idEmpresa);
+            Log.d(TAG,"Retornando " + produtos.size() + " produtos do banco");
+            return produtos;
+        } finally {
+            db.close();
+        }
+    }
+
+    private static List<Produto> getProdutosPromocaoFromWebService(Context context, Long idEmpresa) throws IOException, JSONException {
+        HttpHelper http = new HttpHelper();
+        String json = http.doGet(url.concat("/empresa/promocao/"+idEmpresa));
+        if (json!=null && json.length()>5) {
+            List<Produto> produtos = parserJSON(context, json, idEmpresa);
+            salvarProdutoByEmpresaPromocao(context, produtos, idEmpresa);
+            salvaHoraDataPromocao(context);
+            return produtos;
+        } else {
+            return null;
+        }
+    }
+
+    public static void salvarProdutoByEmpresa(Context context, List<Produto> produtos, Long idEmpresa){
+        ProdutoDB db = new ProdutoDB(context);
+        try {
+            db.deleteByEmpresa(idEmpresa);
+            for (Produto p:produtos){
+                Log.d(TAG,"Salvando o produto: "+p.getNome());
+                db.save(p);
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void salvarProdutoByEmpresaPromocao(Context context, List<Produto> produtos, Long idEmpresa){
+        ProdutoDB db = new ProdutoDB(context);
+        try {
+            db.deleteByEmpresaPromocao(idEmpresa);
+            for (Produto p:produtos){
+                Log.d(TAG,"Salvando o produto: "+p.getNome());
+                db.save(p);
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void salvaHoraData(Context context){
         Calendar c = Calendar.getInstance();
         int day, month, year, hora, minuto, segundos;
         String dataHora;
-        day = c.get(Calendar.DAY_OF_MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH)+1;
         month = c.get(Calendar.MONTH);
         year = c.get(Calendar.YEAR);
-        hora = c.get(Calendar.HOUR);
+        hora = c.get(Calendar.HOUR)+12;
         minuto = c.get(Calendar.MINUTE);
         segundos = c.get(Calendar.SECOND);
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
-        String path = "dhp".concat(cidade).concat(estado);
+        String path = "dhP";
         Prefs.setString(context, path, dataHora);
         Log.i("DATAHORA MODIF ",path);
+    }
+
+    public static void salvaHoraDataPromocao(Context context){
+        Calendar c = Calendar.getInstance();
+        int day, month, year, hora, minuto, segundos;
+        String dataHora;
+        day = c.get(Calendar.DAY_OF_MONTH)+1;
+        month = c.get(Calendar.MONTH);
+        year = c.get(Calendar.YEAR);
+        hora = c.get(Calendar.HOUR)+12;
+        minuto = c.get(Calendar.MINUTE);
+        segundos = c.get(Calendar.SECOND);
+        dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
+        String path = "dhPP";
+        Prefs.setString(context, path, dataHora);
+        Log.i("DATAHORA MODIF ",path);
+    }
+
+    private static List<Produto> parserJSON(Context context, String json, long id) throws IOException, JSONException {
+        List<Produto> produtos = new ArrayList<Produto>();
+        try {
+            JSONArray jsonArray = new JSONArray(json);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonProduto = jsonArray.getJSONObject(i);
+                Produto p = new Produto();
+
+                p.setId(jsonProduto.optInt("id"));
+                p.setIdEmpresa(id);
+                p.setNome(jsonProduto.optString("nome"));
+                p.setPrecoVista(Float.parseFloat(jsonProduto.optString("precoVista")));
+                p.setPrecoPromocao(Float.parseFloat(jsonProduto.optString("precoPromocao")));
+                p.setUnidade(jsonProduto.optString("unidade"));
+                p.setCodBarras(jsonProduto.optString("codBarras"));
+                p.setUrlFoto(jsonProduto.optString("urlFoto"));
+                if (LOG_ON) {
+                    Log.d(TAG, "Carro " + p.getNome() + " > " + p.getPrecoVista());
+                }
+                produtos.add(p);
+            }
+            if (LOG_ON) {
+                Log.d(TAG, produtos.size() + " encontrados.");
+            }
+        } catch (JSONException e) {
+            throw new IOException(e.getMessage(), e);
+        }
+        return produtos;
     }
 }

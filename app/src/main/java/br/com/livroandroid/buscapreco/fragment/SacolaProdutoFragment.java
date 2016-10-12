@@ -89,13 +89,19 @@ public class SacolaProdutoFragment extends BaseFragment {
     }
 
     private void taskProdutos(){
-        startTask("sacola", new GetProdutoTask(), R.id.progress);
+        startTask("sacola", new GetProdutoTask(false), R.id.progress);
     }
 
     private class GetProdutoTask implements BaseFragment.TaskListener<List<Produto>> {
+        boolean refresh;
+
+        public GetProdutoTask(boolean refresh) {
+            this.refresh = refresh;
+        }
+
         @Override
         public List<Produto> execute() throws Exception {
-            return ProdutoService.getProdutosByEmpresa(getContext(),empresa.getId());
+            return ProdutoService.getProdutosByEmpresa(getContext(),empresa.getId(), refresh);
         }
 
         @Override
@@ -260,7 +266,6 @@ public class SacolaProdutoFragment extends BaseFragment {
                 if (!verifica)
                     toast("Não foi encontrado produto com o código");
             }
-            // At this point we may or may not have a reference to the activity
         }
     }
 

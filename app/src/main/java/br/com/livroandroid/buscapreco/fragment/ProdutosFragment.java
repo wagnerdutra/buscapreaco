@@ -13,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -87,7 +88,7 @@ public class ProdutosFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
        // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setHasFixedSize(true);
-        produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener());
+        produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener(),false);
         recyclerView.setAdapter(produtoAdapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeToRefresh);
@@ -121,16 +122,22 @@ public class ProdutosFragment extends BaseFragment {
     }
 
     private void taskProdutos(boolean pullToRefresh){
-        startTask("produtos", new GetProdutoTask(), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
+        startTask("produtos", new GetProdutoTask(pullToRefresh), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
     }
 
     private class GetProdutoTask implements TaskListener<List<Produto>>{
+        boolean refresh;
+
+        public GetProdutoTask(boolean refresh) {
+            this.refresh = refresh;
+        }
+
         @Override
         public List<Produto> execute() throws Exception {
             if (tipo)
-                return ProdutoService.getProdutosByEmpresa(getContext(),empresa.getId());
+                return ProdutoService.getProdutosByEmpresa(getContext(),empresa.getId(),refresh);
             else
-                return ProdutoService.getProdutosByEmpresaPromocao(getContext(),empresa.getId());
+                return ProdutoService.getProdutosByEmpresaPromocao(getContext(),empresa.getId(),refresh);
         }
 
         @Override
@@ -138,7 +145,10 @@ public class ProdutosFragment extends BaseFragment {
             if (produtos!=null){
                 ProdutosFragment.this.produtos=produtos;
                 //Atualiza a view na UI Thread
-                produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener());
+                if (tipo)
+                    produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener(),tipo);
+                else
+                    produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener(),tipo);
                 recyclerView.setAdapter(produtoAdapter);
             } else
                 snack(recyclerView,"Não foi encontrado nenhum produto");

@@ -41,7 +41,7 @@ public class ListaProduto extends BaseActivity {
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setHasFixedSize(true);
 
         produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickProduto());

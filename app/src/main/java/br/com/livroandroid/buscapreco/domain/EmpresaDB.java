@@ -12,11 +12,11 @@ import java.util.List;
 
 import br.com.livroandroid.buscapreco.model.Empresa;
 
-public class EmpresaFavDB extends sqlLite{
+public class EmpresaDB extends sqlLite{
 
     private static final String TAG = "sql";
 
-    public EmpresaFavDB(Context context) {
+    public EmpresaDB(Context context) {
         super(context);
     }
 
@@ -41,18 +41,30 @@ public class EmpresaFavDB extends sqlLite{
             values.put("hora_Fim", empresa.getHoraFim());
             values.put("url_Foto", empresa.getUrlFoto());
             Log.i(TAG, "Gravou "+empresa.getNome());
-            id = db.insert("favoritos","", values);
+            id = db.insert("empresas","", values);
             return id;
         } finally {
             db.close();
         }
     }
 
-    public int delete(Empresa empresa){
+    public int deleteByCidadeEstado(String cidade, String estado){
         SQLiteDatabase db = getWritableDatabase();
 
         try{
-            int count = db.delete("favoritos", "id=?", new String[]{String.valueOf(empresa.getId())});
+            int count = db.delete("empresas", "cidade=? and estado=?", new String[]{cidade,estado});
+            Log.i(TAG, "Deletou ["+count+" registro do tipo");
+            return count;
+        } finally {
+            db.close();
+        }
+    }
+
+    public int deleteByTipo(String tipo, String cidade, String estado){
+        SQLiteDatabase db = getWritableDatabase();
+
+        try{
+            int count = db.delete("empresas", "cidade=? and estado=? and tipo=?", new String[]{cidade,estado,tipo});
             Log.i(TAG, "Deletou ["+count+" registro");
             return count;
         } finally {
@@ -60,27 +72,23 @@ public class EmpresaFavDB extends sqlLite{
         }
     }
 
-    public List<Empresa> findAll(){
+    public List<Empresa> findByCidadeEstado(String cidade, String estado){
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("favoritos", null, null, null, null, null, null, null);
+            Cursor c = db.query("empresas", null,"cidade = '"+cidade+"' and estado='"+estado+"'", null, null, null, null, null);
             return toList(c);
         } finally {
             db.close();
         }
     }
 
-    public boolean existeFav(long id){
+    public List<Empresa> findByEmpresaTipo(String tipo, String cidade, String estado){
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("favoritos", null, "id = "+id, null, null, null, null, null);
-            List<Empresa> empresas = toList(c);
-            if (empresas.size()>0)
-                return true;
-            else
-                return false;
+            Cursor c = db.query("empresas", null, "cidade = '"+cidade+"' and estado='"+estado+"' and tipo='"+tipo+"'", null, null, null, null, null);
+            return toList(c);
         } finally {
             db.close();
         }
