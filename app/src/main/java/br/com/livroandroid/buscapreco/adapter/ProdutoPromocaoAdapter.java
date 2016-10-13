@@ -20,21 +20,23 @@ import br.com.livroandroid.buscapreco.model.Produto;
 import livroandroid.lib.utils.Prefs;
 
 // Herda de RecyclerView.Adapter e declara o tipo genérico <ProdutoAdapter.ProdutosViewHolder>
-public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ProdutoPromocaoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected static final String TAG = "livroandroid";
     private final List<Produto> Produtos;
     private final Context context;
     private final ProdutoOnClickListener onClickListener;
+    private boolean tipo;
 
     public interface ProdutoOnClickListener {
         public void onLongClickProduto(ProdutosViewHolder holder, int idx);
         public void onClickProduto(ProdutosViewHolder holder, int idx);
     }
 
-    public ProdutoAdapter(Context context, List<Produto> Produtos, ProdutoOnClickListener onClickListener) {
+    public ProdutoPromocaoAdapter(Context context, List<Produto> Produtos, ProdutoOnClickListener onClickListener) {
         this.context = context;
         this.Produtos = Produtos;
         this.onClickListener = onClickListener;
+        this.tipo = tipo;
     }
 
     @Override
@@ -64,20 +66,20 @@ public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder.getItemViewType()==0){
             CidadeViewHolder cidadeViewHolder = (CidadeViewHolder) holder;
             //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
-            cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhP")));
-            Log.i("VERIFICANDO DENTRO",Prefs.getString(context, "dhP"));
+            cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhPP")));
+
+            Log.i("VERIFICANDO DENTRO",Prefs.getString(context, "dhPP"));
         } else {
 
             Produto p = Produtos.get(position-1);
 
             final ProdutosViewHolder produtosViewHolder = (ProdutosViewHolder) holder;
 
+            Log.i("PREÇO",String.valueOf(p.getPrecoPromocao()));
+
             produtosViewHolder.pNome.setText(p.getNome());
-            if (p.getPrecoPromocao() > 0)
-                produtosViewHolder.pPreco.setText(String.valueOf(p.getPrecoPromocao()));
-            else
-                produtosViewHolder.pPreco.setText(String.valueOf(p.getPrecoVista()));
-            produtosViewHolder.pUnid.setText(p.getUnidade());
+
+            produtosViewHolder.pPreco.setText(String.valueOf(p.getPrecoPromocao()));
 
             produtosViewHolder.progressBar.setVisibility(View.VISIBLE);
             Picasso.with(context).load(p.getUrlFoto()).fit().into(produtosViewHolder.imagem,

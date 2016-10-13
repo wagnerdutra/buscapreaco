@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import br.com.livroandroid.buscapreco.R;
+import br.com.livroandroid.buscapreco.fragment.ProdutosPromocaoFragment;
 import br.com.livroandroid.buscapreco.model.Empresa;
 import br.com.livroandroid.buscapreco.fragment.ProdutosFragment;
 
@@ -38,8 +39,8 @@ public class TabsAdapterProduto extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0){
-            return ProdutosFragment.newInstance(empresa,true);
+            return ProdutosFragment.newInstance(empresa);
         }else
-            return ProdutosFragment.newInstance(empresa,false);
+            return ProdutosPromocaoFragment.newInstance(empresa);
     }
 }

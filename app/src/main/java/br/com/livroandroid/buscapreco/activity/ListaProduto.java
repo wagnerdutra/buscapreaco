@@ -17,6 +17,7 @@ import java.util.List;
 import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.Utils.DividerItemDecoration;
 import br.com.livroandroid.buscapreco.adapter.EmpresaAdapter;
+import br.com.livroandroid.buscapreco.adapter.ListaProdutoAdapter;
 import br.com.livroandroid.buscapreco.adapter.ProdutoAdapter;
 import br.com.livroandroid.buscapreco.model.Empresa;
 import br.com.livroandroid.buscapreco.model.Produto;
@@ -25,7 +26,7 @@ public class ListaProduto extends BaseActivity {
 
     protected RecyclerView recyclerView;
     private List<Produto> produtos;
-    private ProdutoAdapter produtoAdapter;
+    private ListaProdutoAdapter produtoAdapter;
     private LinearLayoutManager linearLayoutManager;
 
     @Override
@@ -44,19 +45,19 @@ public class ListaProduto extends BaseActivity {
         //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setHasFixedSize(true);
 
-        produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickProduto());
+        produtoAdapter = new ListaProdutoAdapter(getContext(), produtos, onClickProduto());
         recyclerView.setAdapter(produtoAdapter);
     }
 
-    private ProdutoAdapter.ProdutoOnClickListener onClickProduto() {
-        return new ProdutoAdapter.ProdutoOnClickListener() {
+    private ListaProdutoAdapter.ProdutoOnClickListener onClickProduto() {
+        return new ListaProdutoAdapter.ProdutoOnClickListener() {
             @Override
-            public void onLongClickProduto(ProdutoAdapter.ProdutosViewHolder holder, int idx) {
+            public void onLongClickProduto(ListaProdutoAdapter.ProdutosViewHolder holder, int idx) {
 
             }
 
             @Override
-            public void onClickProduto(ProdutoAdapter.ProdutosViewHolder holder, int idx) {
+            public void onClickProduto(ListaProdutoAdapter.ProdutosViewHolder holder, int idx) {
 
             }
         };

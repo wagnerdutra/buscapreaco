@@ -13,7 +13,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +31,7 @@ import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.Utils.AnyOrientationCaptureActivity;
 import br.com.livroandroid.buscapreco.activity.ListaProduto;
 import br.com.livroandroid.buscapreco.adapter.ProdutoAdapter;
-import br.com.livroandroid.buscapreco.domain.EmpresaService;
+import br.com.livroandroid.buscapreco.adapter.ProdutoPromocaoAdapter;
 import br.com.livroandroid.buscapreco.domain.ProdutoService;
 import br.com.livroandroid.buscapreco.model.Empresa;
 import br.com.livroandroid.buscapreco.model.Produto;
@@ -41,26 +40,26 @@ import livroandroid.lib.utils.AndroidUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProdutosFragment extends BaseFragment {
+public class ProdutosPromocaoFragment extends BaseFragment {
 
     protected RecyclerView recyclerView;
     private List<Produto> produtos;
-    private ProdutoAdapter produtoAdapter;
+    private ProdutoPromocaoAdapter produtoAdapter;
     private LinearLayoutManager linearLayoutManager;
     private Empresa empresa;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ActionMode actionMode;
     private String text="";
 
-    public static ProdutosFragment newInstance(Empresa empresa){
+    public static ProdutosPromocaoFragment newInstance(Empresa empresa){
         Bundle args = new Bundle();
         args.putParcelable("empresa", empresa);
-        ProdutosFragment f = new ProdutosFragment();
+        ProdutosPromocaoFragment f = new ProdutosPromocaoFragment();
         f.setArguments(args);
         return f;
     }
 
-    public ProdutosFragment(){
+    public ProdutosPromocaoFragment(){
 
     }
 
@@ -85,7 +84,7 @@ public class ProdutosFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
        // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setHasFixedSize(true);
-        produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener());
+        produtoAdapter = new ProdutoPromocaoAdapter(getContext(), produtos, onClickListener());
         recyclerView.setAdapter(produtoAdapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeToRefresh);
@@ -131,15 +130,15 @@ public class ProdutosFragment extends BaseFragment {
 
         @Override
         public List<Produto> execute() throws Exception {
-            return ProdutoService.getProdutosByEmpresa(getContext(),empresa.getId(),refresh);
+            return ProdutoService.getProdutosByEmpresaPromocao(getContext(),empresa.getId(),refresh);
         }
 
         @Override
         public void updateView(List<Produto> produtos) {
             if (produtos!=null){
-                ProdutosFragment.this.produtos=produtos;
+                ProdutosPromocaoFragment.this.produtos=produtos;
                 //Atualiza a view na UI Thread
-                produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener());
+                produtoAdapter = new ProdutoPromocaoAdapter(getContext(), produtos, onClickListener());
                 recyclerView.setAdapter(produtoAdapter);
             } else
                 snack(recyclerView,"Não foi encontrado nenhum produto");
@@ -157,10 +156,10 @@ public class ProdutosFragment extends BaseFragment {
         }
     }
 
-    private ProdutoAdapter.ProdutoOnClickListener onClickListener() {
-        return new ProdutoAdapter.ProdutoOnClickListener() {
+    private ProdutoPromocaoAdapter.ProdutoOnClickListener onClickListener() {
+        return new ProdutoPromocaoAdapter.ProdutoOnClickListener() {
             @Override
-            public void onLongClickProduto(ProdutoAdapter.ProdutosViewHolder holder, int idx) {
+            public void onLongClickProduto(ProdutoPromocaoAdapter.ProdutosViewHolder holder, int idx) {
                 if (actionMode!=null){
                     return;
                 }
@@ -172,7 +171,7 @@ public class ProdutosFragment extends BaseFragment {
             }
 
             @Override
-            public void onClickProduto(ProdutoAdapter.ProdutosViewHolder holder, int idx) {
+            public void onClickProduto(ProdutoPromocaoAdapter.ProdutosViewHolder holder, int idx) {
                 Produto p = produtoAdapter.getProdutos().get(idx-1);
                 if (actionMode!=null) {
                     p.setSelected(!p.isSelected());

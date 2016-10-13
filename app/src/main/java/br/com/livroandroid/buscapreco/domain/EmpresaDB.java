@@ -76,7 +76,7 @@ public class EmpresaDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("empresas", null,"cidade = '"+cidade+"' and estado='"+estado+"'", null, null, null, null, null);
+            Cursor c = db.query("empresas", null,"cidade = '"+cidade+"' and estado='"+estado+"'", null, null, null, "nome", null);
             return toList(c);
         } finally {
             db.close();
@@ -87,7 +87,7 @@ public class EmpresaDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("empresas", null, "cidade = '"+cidade+"' and estado='"+estado+"' and tipo='"+tipo+"'", null, null, null, null, null);
+            Cursor c = db.query("empresas", null, "cidade = '"+cidade+"' and estado='"+estado+"' and tipo='"+tipo+"'", null, null, null, "nome", null);
             return toList(c);
         } finally {
             db.close();
@@ -99,7 +99,6 @@ public class EmpresaDB extends sqlLite{
         if (c.moveToFirst()){
             do{
                 Empresa empresa = new Empresa();
-                empresas.add(empresa);
 
                 empresa.setId(c.getLong(c.getColumnIndex("id")));
                 empresa.setNome(c.getString(c.getColumnIndex("nome")));
@@ -116,6 +115,7 @@ public class EmpresaDB extends sqlLite{
                 empresa.setHoraInicio(c.getString(c.getColumnIndex("hora_Inicio")));
                 empresa.setHoraFim(c.getString(c.getColumnIndex("hora_Fim")));
                 empresa.setUrlFoto(c.getString(c.getColumnIndex("url_Foto")));
+                empresas.add(empresa);
             } while (c.moveToNext());
         }
         return empresas;

@@ -175,6 +175,7 @@ public class EmpresasFragment extends BaseFragment {
         @Override
         public void updateView(List<Empresa> empresas) {
             if (empresas!=null){
+                Toast.makeText(getContext(), empresas.size() + " Empresas encontrada(s)!", Toast.LENGTH_LONG).show();
                 Prefs.setString(getContext(), "cidade", cidade);
                 Prefs.setString(getContext(), "estado", estado);
                 EmpresasFragment.this.empresas=empresas;

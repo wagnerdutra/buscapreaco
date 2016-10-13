@@ -56,7 +56,8 @@ public class ProdutoDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try{
-            int count = db.delete("produtos", "idEmpresa=? and precoPromocao>0", new String[]{String.valueOf(idEmpresa)});
+            Log.i("DELETOU", "PRODUTOS EM PROMOCAO");
+            int count = db.delete("produtos", "idEmpresa=? and precoPromocao>0.0", new String[]{String.valueOf(idEmpresa)});
             Log.i(TAG, "Deletou ["+count+" registro");
             return count;
         } finally {
@@ -68,7 +69,7 @@ public class ProdutoDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("produtos", null,"idEmpresa = '"+idEmpresa+"'", null, null, null, null, null);
+            Cursor c = db.query("produtos", null,"idEmpresa = '"+idEmpresa+"'", null, null, null, "nome", null);
             return toList(c);
         } finally {
             db.close();
@@ -79,7 +80,7 @@ public class ProdutoDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("produtos", null, "idEmpresa = '"+idEmpresa+"' and precoPromocao>0", null, null, null, null, null);
+            Cursor c = db.query("produtos", null, "idEmpresa = '"+idEmpresa+"' and precoPromocao > 0.0", null, null, null, "nome", null);
             return toList(c);
         } finally {
             db.close();
@@ -91,16 +92,18 @@ public class ProdutoDB extends sqlLite{
         if (c.moveToFirst()){
             do{
                 Produto produto = new Produto();
-                produtos.add(produto);
-
+                Log.i(TAG, "ENTROOUU");
+                String teste = "JOAO";
+                teste = "viado";
                 produto.setId(c.getLong(c.getColumnIndex("id")));
                 produto.setIdEmpresa(c.getLong(c.getColumnIndex("idEmpresa")));
                 produto.setNome(c.getString(c.getColumnIndex("nome")));
                 produto.setPrecoVista(c.getFloat(c.getColumnIndex("precoVista")));
-                produto.setPrecoPromocao(c.getInt(c.getColumnIndex("precoPromocao")));
+                produto.setPrecoPromocao(c.getFloat(c.getColumnIndex("precoPromocao")));
                 produto.setUnidade(c.getString(c.getColumnIndex("unidade")));
                 produto.setCodBarras(c.getString(c.getColumnIndex("codBarras")));
                 produto.setUrlFoto(c.getString(c.getColumnIndex("urlFoto")));
+                produtos.add(produto);
             } while (c.moveToNext());
         }
         return produtos;

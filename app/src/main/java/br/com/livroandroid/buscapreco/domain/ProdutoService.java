@@ -39,6 +39,7 @@ public class ProdutoService {
     }
 
     private static List<Produto> getProdutosFromBanco(Context context, Long idEmpresa) {
+        Log.i("NAO Pegou PROMOCAO ","NAO VEIO PROMOCAO BANCO");
         ProdutoDB db = new ProdutoDB(context);
         try {
             List<Produto> produtos = db.findByEmpresa(idEmpresa);
@@ -79,6 +80,7 @@ public class ProdutoService {
     }
 
     private static List<Produto> getProdutosPromocaoFromBanco(Context context, Long idEmpresa) {
+        Log.i("Pegou PROMOCAO ","PROMOCAO BANCO");
         ProdutoDB db = new ProdutoDB(context);
         try {
             List<Produto> produtos = db.findByEmpresaPromocao(idEmpresa);
@@ -120,7 +122,7 @@ public class ProdutoService {
         try {
             db.deleteByEmpresaPromocao(idEmpresa);
             for (Produto p:produtos){
-                Log.d(TAG,"Salvando o produto: "+p.getNome());
+                Log.d(TAG,"Preço PROMO: "+p.getPrecoPromocao());
                 db.save(p);
             }
         } finally {
@@ -132,10 +134,10 @@ public class ProdutoService {
         Calendar c = Calendar.getInstance();
         int day, month, year, hora, minuto, segundos;
         String dataHora;
-        day = c.get(Calendar.DAY_OF_MONTH)+1;
-        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+        month = c.get(Calendar.MONTH)+1;
         year = c.get(Calendar.YEAR);
-        hora = c.get(Calendar.HOUR)+12;
+        hora = c.get(Calendar.HOUR_OF_DAY);
         minuto = c.get(Calendar.MINUTE);
         segundos = c.get(Calendar.SECOND);
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
@@ -148,10 +150,10 @@ public class ProdutoService {
         Calendar c = Calendar.getInstance();
         int day, month, year, hora, minuto, segundos;
         String dataHora;
-        day = c.get(Calendar.DAY_OF_MONTH)+1;
-        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
+        month = c.get(Calendar.MONTH)+1;
         year = c.get(Calendar.YEAR);
-        hora = c.get(Calendar.HOUR)+12;
+        hora = c.get(Calendar.HOUR_OF_DAY);
         minuto = c.get(Calendar.MINUTE);
         segundos = c.get(Calendar.SECOND);
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
