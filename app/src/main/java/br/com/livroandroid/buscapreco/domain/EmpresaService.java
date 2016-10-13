@@ -16,7 +16,7 @@ import livroandroid.lib.utils.Prefs;
 
 public class EmpresaService {
 
-    private static final String url = "http://192.168.1.104:8080/buscapreco/rest/empresas";
+    private static final String url = "http://192.168.1.106:8080/buscapreco/rest/empresas";
     private static final String TAG = "EmpresaService";
     private static final boolean LOG_ON = false;
 
