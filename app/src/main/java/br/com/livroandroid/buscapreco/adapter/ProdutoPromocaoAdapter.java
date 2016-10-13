@@ -25,7 +25,6 @@ public class ProdutoPromocaoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private final List<Produto> Produtos;
     private final Context context;
     private final ProdutoOnClickListener onClickListener;
-    private boolean tipo;
 
     public interface ProdutoOnClickListener {
         public void onLongClickProduto(ProdutosViewHolder holder, int idx);
@@ -36,7 +35,6 @@ public class ProdutoPromocaoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.context = context;
         this.Produtos = Produtos;
         this.onClickListener = onClickListener;
-        this.tipo = tipo;
     }
 
     @Override
@@ -66,7 +64,7 @@ public class ProdutoPromocaoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (holder.getItemViewType()==0){
             CidadeViewHolder cidadeViewHolder = (CidadeViewHolder) holder;
             //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
-            cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhPP")));
+            cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhPP"+Produtos.get(position).getIdEmpresa())));
 
             Log.i("VERIFICANDO DENTRO",Prefs.getString(context, "dhPP"));
         } else {
@@ -92,6 +90,7 @@ public class ProdutoPromocaoAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         @Override
                         public void onError() {
                             produtosViewHolder.progressBar.setVisibility(View.GONE);
+                            produtosViewHolder.imagem.setImageResource(R.drawable.semimagem);
                         }
                     });
 

@@ -69,6 +69,7 @@ public class FavoritoAdapter extends RecyclerView.Adapter<FavoritoAdapter.Empres
                     @Override
                     public void onError() {
                         holder.progressBar.setVisibility(View.GONE);
+                        holder.imagem.setImageResource(R.drawable.semimagem);
                     }
                 });
         } else {

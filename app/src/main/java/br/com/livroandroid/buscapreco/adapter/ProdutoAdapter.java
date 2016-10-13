@@ -64,7 +64,7 @@ public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder.getItemViewType()==0){
             CidadeViewHolder cidadeViewHolder = (CidadeViewHolder) holder;
             //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
-            cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhP")));
+            cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhP"+Produtos.get(position).getIdEmpresa())));
             Log.i("VERIFICANDO DENTRO",Prefs.getString(context, "dhP"));
         } else {
 
@@ -90,6 +90,7 @@ public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         @Override
                         public void onError() {
                             produtosViewHolder.progressBar.setVisibility(View.GONE);
+                            produtosViewHolder.imagem.setImageResource(R.drawable.semimagem);
                         }
                     });
 

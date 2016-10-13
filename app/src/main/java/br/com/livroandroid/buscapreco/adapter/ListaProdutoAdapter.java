@@ -73,6 +73,7 @@ public class ListaProdutoAdapter extends RecyclerView.Adapter<ListaProdutoAdapte
                 @Override
                 public void onError() {
                     holder.progressBar.setVisibility(View.GONE);
+                    holder.imagem.setImageResource(R.drawable.semimagem);
                 }
             });
     }

@@ -93,8 +93,6 @@ public class ProdutoDB extends sqlLite{
             do{
                 Produto produto = new Produto();
                 Log.i(TAG, "ENTROOUU");
-                String teste = "JOAO";
-                teste = "viado";
                 produto.setId(c.getLong(c.getColumnIndex("id")));
                 produto.setIdEmpresa(c.getLong(c.getColumnIndex("idEmpresa")));
                 produto.setNome(c.getString(c.getColumnIndex("nome")));

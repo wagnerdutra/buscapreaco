@@ -2,6 +2,7 @@ package br.com.livroandroid.buscapreco.domain;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +25,6 @@ public class ProdutoService {
 
     public static List<Produto> getProdutosByEmpresa(Context context, Long id, boolean refresh) throws IOException, JSONException {
         List<Produto> produtos;
-
         boolean buscaNoBancoDeDados = !refresh;
 
         if (buscaNoBancoDeDados) {
@@ -56,7 +56,7 @@ public class ProdutoService {
         if (json!=null && json.length()>5) {
             List<Produto> produtos = parserJSON(context, json, idEmpresa);
             salvarProdutoByEmpresa(context, produtos, idEmpresa);
-            salvaHoraData(context);
+            salvaHoraData(context,idEmpresa);
             return produtos;
         } else {
             return null;
@@ -97,7 +97,7 @@ public class ProdutoService {
         if (json!=null && json.length()>5) {
             List<Produto> produtos = parserJSON(context, json, idEmpresa);
             salvarProdutoByEmpresaPromocao(context, produtos, idEmpresa);
-            salvaHoraDataPromocao(context);
+            salvaHoraDataPromocao(context, idEmpresa);
             return produtos;
         } else {
             return null;
@@ -130,7 +130,7 @@ public class ProdutoService {
         }
     }
 
-    public static void salvaHoraData(Context context){
+    public static void salvaHoraData(Context context, Long idEmpresa){
         Calendar c = Calendar.getInstance();
         int day, month, year, hora, minuto, segundos;
         String dataHora;
@@ -141,12 +141,12 @@ public class ProdutoService {
         minuto = c.get(Calendar.MINUTE);
         segundos = c.get(Calendar.SECOND);
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
-        String path = "dhP";
+        String path = "dhP".concat(String.valueOf(idEmpresa));
         Prefs.setString(context, path, dataHora);
         Log.i("DATAHORA MODIF ",path);
     }
 
-    public static void salvaHoraDataPromocao(Context context){
+    public static void salvaHoraDataPromocao(Context context, Long idEmpresa){
         Calendar c = Calendar.getInstance();
         int day, month, year, hora, minuto, segundos;
         String dataHora;
@@ -157,7 +157,7 @@ public class ProdutoService {
         minuto = c.get(Calendar.MINUTE);
         segundos = c.get(Calendar.SECOND);
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
-        String path = "dhPP";
+        String path = "dhPP".concat(String.valueOf(idEmpresa));
         Prefs.setString(context, path, dataHora);
         Log.i("DATAHORA MODIF ",path);
     }

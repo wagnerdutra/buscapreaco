@@ -123,7 +123,7 @@ public class ListaCategoriaFragment extends BaseFragment {
         @Override
         public void updateView(List<Empresa> empresas) {
             if (empresas!=null){
-                Toast.makeText(getContext(), empresas.size() + " Empresas encontrada(s)!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), empresas.size() + " Empresa(s) encontrada(s)!", Toast.LENGTH_LONG).show();
                 ListaCategoriaFragment.this.empresas=empresas;
                 empresaAdapter = new EmpresaAdapter(getContext(), empresas, onClickEmpresa());
                 recyclerView.setAdapter(empresaAdapter);

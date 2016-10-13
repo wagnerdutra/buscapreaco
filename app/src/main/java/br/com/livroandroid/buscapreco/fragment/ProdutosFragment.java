@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -142,8 +143,7 @@ public class ProdutosFragment extends BaseFragment {
                 produtoAdapter = new ProdutoAdapter(getContext(), produtos, onClickListener());
                 recyclerView.setAdapter(produtoAdapter);
             } else
-                snack(recyclerView,"Não foi encontrado nenhum produto");
-                //Toast.makeText(getContext(), "Não foi encontrado nenhum produto", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Não foi encontrado nenhum produto", Toast.LENGTH_SHORT).show();
         }
 
         @Override

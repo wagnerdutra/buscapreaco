@@ -75,6 +75,7 @@ public class SacolaProdutoAdapter extends RecyclerView.Adapter<SacolaProdutoAdap
                     @Override
                     public void onError() {
                         holder.progressBar.setVisibility(View.GONE);
+                        holder.imagem.setImageResource(R.drawable.semimagem);
                     }
                 });
 

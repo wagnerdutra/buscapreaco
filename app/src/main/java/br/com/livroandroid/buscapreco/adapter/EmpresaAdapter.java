@@ -94,6 +94,7 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         @Override
                         public void onError() {
                             empresasViewHolder.progressBar.setVisibility(View.GONE);
+                            empresasViewHolder.imagem.setImageResource(R.drawable.semimagem);
                         }
                     });
             } else {
