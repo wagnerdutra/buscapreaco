@@ -14,7 +14,6 @@ import android.view.animation.AnimationUtils;
 
 import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.adapter.TabsAdapterProduto;
-import br.com.livroandroid.buscapreco.fragment.SacolaProdutoFragment;
 import br.com.livroandroid.buscapreco.model.Empresa;
 import livroandroid.lib.utils.Prefs;
 

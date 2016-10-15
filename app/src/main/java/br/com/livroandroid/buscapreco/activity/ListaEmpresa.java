@@ -2,15 +2,10 @@ package br.com.livroandroid.buscapreco.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.MenuItem;
 
-import java.util.List;
-
 import br.com.livroandroid.buscapreco.R;
-import br.com.livroandroid.buscapreco.fragment.EmpresasFragment;
 import br.com.livroandroid.buscapreco.fragment.ListaEmpresaFragment;
-import br.com.livroandroid.buscapreco.model.Empresa;
 
 public class ListaEmpresa extends BaseActivity {
 

@@ -31,7 +31,6 @@ import java.util.List;
 import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.Utils.AnyOrientationCaptureActivity;
 import br.com.livroandroid.buscapreco.activity.ListaProduto;
-import br.com.livroandroid.buscapreco.adapter.ProdutoAdapter;
 import br.com.livroandroid.buscapreco.adapter.ProdutoPromocaoAdapter;
 import br.com.livroandroid.buscapreco.domain.ProdutoService;
 import br.com.livroandroid.buscapreco.model.Empresa;

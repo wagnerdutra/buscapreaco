@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +16,7 @@ import java.util.List;
 
 import br.com.livroandroid.buscapreco.BuscaPrecoApplication;
 import br.com.livroandroid.buscapreco.R;
-import br.com.livroandroid.buscapreco.Utils.DividerItemDecoration;
 import br.com.livroandroid.buscapreco.activity.ProdutosActivity;
-import br.com.livroandroid.buscapreco.adapter.EmpresaAdapter;
 import br.com.livroandroid.buscapreco.adapter.FavoritoAdapter;
 import br.com.livroandroid.buscapreco.domain.EmpresaService;
 import br.com.livroandroid.buscapreco.model.Empresa;
@@ -58,7 +55,6 @@ public class ListaEmpresaFragment extends BaseFragment {
 
     public void setEmpresa(List<Empresa> empresas){
         if (empresas!=null){
-            Log.i("AQUI","AQUI");
             this.empresas = empresas;
             empresaAdapter = new FavoritoAdapter(getContext(), empresas, onClickEmpresa());
             recyclerView.setAdapter(empresaAdapter);

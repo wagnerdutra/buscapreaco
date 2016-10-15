@@ -2,13 +2,10 @@ package br.com.livroandroid.buscapreco.adapter;
 
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -70,11 +67,8 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder.getItemViewType()==0){
             Empresa e = Empresas.get(0);
             CidadeViewHolder cidadeViewHolder = (CidadeViewHolder) holder;
-            //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
             cidadeViewHolder.tvCidade.setText(e.getCidade().concat(" - "+e.getEstado()+" " +
                 "\n\nÚltima atualização: "+ Prefs.getString(context, "dh"+e.getCidade()+e.getEstado())+"\n"));
-            Log.i("VERIFICANDO DENTRO","dh"+e.getCidade()+e.getEstado());
-            Log.i("VERIFICANDO DENTRO","dh"+e.getCidade()+e.getEstado());
         } else {
             Empresa e = Empresas.get(position-1);
 

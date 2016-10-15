@@ -2,7 +2,6 @@ package br.com.livroandroid.buscapreco.domain;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +38,6 @@ public class ProdutoService {
     }
 
     private static List<Produto> getProdutosFromBanco(Context context, Long idEmpresa) {
-        Log.i("NAO Pegou PROMOCAO ","NAO VEIO PROMOCAO BANCO");
         ProdutoDB db = new ProdutoDB(context);
         try {
             List<Produto> produtos = db.findByEmpresa(idEmpresa);
@@ -80,7 +78,6 @@ public class ProdutoService {
     }
 
     private static List<Produto> getProdutosPromocaoFromBanco(Context context, Long idEmpresa) {
-        Log.i("Pegou PROMOCAO ","PROMOCAO BANCO");
         ProdutoDB db = new ProdutoDB(context);
         try {
             List<Produto> produtos = db.findByEmpresaPromocao(idEmpresa);
@@ -143,7 +140,6 @@ public class ProdutoService {
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
         String path = "dhP".concat(String.valueOf(idEmpresa));
         Prefs.setString(context, path, dataHora);
-        Log.i("DATAHORA MODIF ",path);
     }
 
     public static void salvaHoraDataPromocao(Context context, Long idEmpresa){
@@ -159,7 +155,6 @@ public class ProdutoService {
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
         String path = "dhPP".concat(String.valueOf(idEmpresa));
         Prefs.setString(context, path, dataHora);
-        Log.i("DATAHORA MODIF ",path);
     }
 
     private static List<Produto> parserJSON(Context context, String json, long id) throws IOException, JSONException {

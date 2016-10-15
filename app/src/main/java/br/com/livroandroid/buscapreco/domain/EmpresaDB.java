@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class EmpresaDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("empresas", null,"cidade = '"+cidade+"' and estado='"+estado+"'", null, null, null, "nome", null);
+            Cursor c = db.query("empresas", null,"cidade = '"+cidade+"' and estado='"+estado+"'", null, null, null, "lower(nome)", null);
             return toList(c);
         } finally {
             db.close();
@@ -87,7 +86,7 @@ public class EmpresaDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("empresas", null, "cidade = '"+cidade+"' and estado='"+estado+"' and tipo='"+tipo+"'", null, null, null, "nome", null);
+            Cursor c = db.query("empresas", null, "cidade = '"+cidade+"' and estado='"+estado+"' and tipo='"+tipo+"'", null, null, null, "lower(nome)", null);
             return toList(c);
         } finally {
             db.close();

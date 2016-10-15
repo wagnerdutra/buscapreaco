@@ -2,13 +2,16 @@ package br.com.livroandroid.buscapreco.domain;
 
 import android.content.Context;
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import br.com.livroandroid.buscapreco.Utils.Utils;
 import br.com.livroandroid.buscapreco.model.Empresa;
 import livroandroid.lib.utils.HttpHelper;
@@ -55,7 +58,6 @@ public class EmpresaService {
             throws IOException, JSONException {
 
         cidade = Utils.encodeString(cidade);
-        Log.i("TESTE",url+"/cidade/"+cidade+"/estado/"+estado);
         HttpHelper http = new HttpHelper();
         String json = http.doGet(url+"/cidade/"+cidade+"/estado/"+estado);
 
@@ -106,7 +108,6 @@ public class EmpresaService {
         cidade = Utils.encodeString(cidade);
         HttpHelper http = new HttpHelper();
         String json = http.doGet(url+"/cidade/"+cidade+"/estado/"+estado+"/categoria/"+tipo);
-        Log.i("url",url+"/cidade/"+cidade+"/estado/"+estado+"/categoria/"+tipo);
 
         if (json!=null && json.length()>5) {
             List<Empresa> empresas = parserJSON(context,json);
@@ -130,9 +131,7 @@ public class EmpresaService {
         segundos = c.get(Calendar.SECOND);
         dataHora = day+"/"+month+"/"+year+" "+hora+"h"+minuto+"m"+segundos+"s";
         String path = "dh"+cidade+estado;
-        Log.i("HORA E DATA ATUAL",dataHora);
         Prefs.setString(context, path, dataHora);
-        Log.i("DATAHORA MODIF ",path);
     }
 
     public static void salvarEmpresaFav(Context context, Empresa empresa){
@@ -204,7 +203,7 @@ public class EmpresaService {
                 c.setUrlFoto(jsonEmpresa.optString("urlFoto"));
 
                 if (LOG_ON) {
-                    Log.d(TAG, "Carro " + c.getNome() + " > " + c.getCidade());
+                    Log.d(TAG, "Empresa " + c.getNome() + " > " + c.getCidade());
                 }
                 empresas.add(c);
             }

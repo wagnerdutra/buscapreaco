@@ -56,7 +56,6 @@ public class ProdutoDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try{
-            Log.i("DELETOU", "PRODUTOS EM PROMOCAO");
             int count = db.delete("produtos", "idEmpresa=? and precoPromocao>0.0", new String[]{String.valueOf(idEmpresa)});
             Log.i(TAG, "Deletou ["+count+" registro");
             return count;
@@ -69,7 +68,7 @@ public class ProdutoDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("produtos", null,"idEmpresa = '"+idEmpresa+"'", null, null, null, "nome", null);
+            Cursor c = db.query("produtos", null,"idEmpresa = '"+idEmpresa+"'", null, null, null, "lower(nome)", null);
             return toList(c);
         } finally {
             db.close();
@@ -80,7 +79,7 @@ public class ProdutoDB extends sqlLite{
         SQLiteDatabase db = getWritableDatabase();
 
         try {
-            Cursor c = db.query("produtos", null, "idEmpresa = '"+idEmpresa+"' and precoPromocao > 0.0", null, null, null, "nome", null);
+            Cursor c = db.query("produtos", null, "idEmpresa = '"+idEmpresa+"' and precoPromocao > 0.0", null, null, null, "lower(nome)", null);
             return toList(c);
         } finally {
             db.close();
@@ -92,7 +91,6 @@ public class ProdutoDB extends sqlLite{
         if (c.moveToFirst()){
             do{
                 Produto produto = new Produto();
-                Log.i(TAG, "ENTROOUU");
                 produto.setId(c.getLong(c.getColumnIndex("id")));
                 produto.setIdEmpresa(c.getLong(c.getColumnIndex("idEmpresa")));
                 produto.setNome(c.getString(c.getColumnIndex("nome")));

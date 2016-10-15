@@ -1,25 +1,16 @@
 package br.com.livroandroid.buscapreco.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.List;
 
 import br.com.livroandroid.buscapreco.R;
-import br.com.livroandroid.buscapreco.Utils.DividerItemDecoration;
-import br.com.livroandroid.buscapreco.adapter.EmpresaAdapter;
 import br.com.livroandroid.buscapreco.adapter.ListaProdutoAdapter;
-import br.com.livroandroid.buscapreco.adapter.ProdutoAdapter;
-import br.com.livroandroid.buscapreco.model.Empresa;
 import br.com.livroandroid.buscapreco.model.Produto;
 
 public class ListaProduto extends BaseActivity {

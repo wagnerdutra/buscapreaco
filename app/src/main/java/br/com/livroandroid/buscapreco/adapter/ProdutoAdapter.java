@@ -3,7 +3,6 @@ package br.com.livroandroid.buscapreco.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +62,7 @@ public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder.getItemViewType()==0){
             CidadeViewHolder cidadeViewHolder = (CidadeViewHolder) holder;
-            //cidadeViewHolder.tvCidade.setText(Prefs.getString(context,"cidade").concat(" - ".concat(Prefs.getString(context,"estado"))));
             cidadeViewHolder.tvCidade.setText("Última atualização: ".concat(Prefs.getString(context, "dhP"+Produtos.get(position).getIdEmpresa())));
-            Log.i("VERIFICANDO DENTRO",Prefs.getString(context, "dhP"));
         } else {
 
             Produto p = Produtos.get(position-1);

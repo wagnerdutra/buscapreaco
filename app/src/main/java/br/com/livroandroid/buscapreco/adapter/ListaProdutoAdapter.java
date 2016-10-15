@@ -3,11 +3,9 @@ package br.com.livroandroid.buscapreco.adapter;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import java.util.List;
 
 import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.model.Produto;
-import livroandroid.lib.utils.Prefs;
 
 // Herda de RecyclerView.Adapter e declara o tipo genérico <ProdutoAdapter.ProdutosViewHolder>
 public class ListaProdutoAdapter extends RecyclerView.Adapter<ListaProdutoAdapter.ProdutosViewHolder> {

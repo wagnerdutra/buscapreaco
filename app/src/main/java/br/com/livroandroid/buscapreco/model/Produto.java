@@ -3,9 +3,6 @@ package br.com.livroandroid.buscapreco.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Wagner on 14/02/2016.
  */

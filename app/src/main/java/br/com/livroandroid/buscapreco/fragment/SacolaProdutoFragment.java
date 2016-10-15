@@ -2,17 +2,12 @@ package br.com.livroandroid.buscapreco.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.FloatProperty;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,17 +18,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.common.StringUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.Utils.AnyOrientationCaptureActivity;
-import br.com.livroandroid.buscapreco.activity.ListaProduto;
-import br.com.livroandroid.buscapreco.adapter.ProdutoAdapter;
 import br.com.livroandroid.buscapreco.adapter.SacolaProdutoAdapter;
 import br.com.livroandroid.buscapreco.domain.ProdutoService;
 import br.com.livroandroid.buscapreco.model.Empresa;
@@ -160,8 +151,6 @@ public class SacolaProdutoFragment extends BaseFragment {
                 }else{
                     Produto p = produtoAdapter.getProdutos().get(idx);
                     float total = Float.parseFloat(tvTotal.getText().toString());
-                    Log.i("TESETEE",(holder.pQtd.getText().toString()));
-                    Log.i("TESTANDOO",holder.pPreco.getText().toString());
                     total = total - (p.getQtd()) * (Float.parseFloat(holder.pPreco.getText().toString()));
                     tvTotal.setText(String.valueOf(total));
                     p.setQtd(0);
