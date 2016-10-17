@@ -1,6 +1,5 @@
 package br.com.livroandroid.buscapreco.adapter;
 
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,63 +73,21 @@ public class EmpresaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             final EmpresasViewHolder empresasViewHolder = (EmpresasViewHolder) holder;
 
-            String teste;
-            if (!e.getUrlFoto().equals("")){
-                empresasViewHolder.progressBar.setVisibility(View.VISIBLE);
-                Picasso.with(context).load(e.getUrlFoto()).fit().into(empresasViewHolder.imagem,
-                    new com.squareup.picasso.Callback(){
-                        @Override
-                        public void onSuccess() {
-                            empresasViewHolder.progressBar.setVisibility(View.GONE);
+            empresasViewHolder.progressBar.setVisibility(View.VISIBLE);
+            Picasso.with(context).load(e.getUrlFoto()).fit().into(empresasViewHolder.imagem,
+                new com.squareup.picasso.Callback(){
+                    @Override
+                    public void onSuccess() {
+                        empresasViewHolder.progressBar.setVisibility(View.GONE);
 
-                        }
+                    }
 
-                        @Override
-                        public void onError() {
-                            empresasViewHolder.progressBar.setVisibility(View.GONE);
-                            empresasViewHolder.imagem.setImageResource(R.drawable.semimagem);
-                        }
-                    });
-            } else {
-                switch (e.getTipo()){
-                    case "Supermercado":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.supermercado);
-                        break;
+                    @Override
+                    public void onError() {
+                        empresasViewHolder.progressBar.setVisibility(View.GONE);
+                        empresasViewHolder.imagem.setImageResource(R.drawable.semimagem);
                     }
-                    case "Açougue":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.acougue);
-                        break;
-                    }
-                    case "Restaurante":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.restaurante);
-                        break;
-                    }
-                    case "Lanchonete":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.lanchonete);
-                        break;
-                    }
-                    case "Pizzaria":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.pizzaria);
-                        break;
-                    }
-                    case "Cervejaria":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.cervejaria);
-                        break;
-                    }
-                    case "Materiais":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.materiais);
-                        break;
-                    }
-                    case "Farmacia":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.farmacia);
-                        break;
-                    }
-                    case "Lojas":{
-                        empresasViewHolder.imagem.setImageResource(R.drawable.loja);
-                        break;
-                    }
-                }
-            }
+                });
 
             empresasViewHolder.eNome.setText(e.getNome());
             empresasViewHolder.eEnd.setText(e.getRua().concat(", "+e.getNumero()));

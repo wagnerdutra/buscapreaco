@@ -10,6 +10,12 @@
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
     <item
+        android:id="@+id/action_promoProduto"
+        android:title="@string/produtos_em_promo_o"
+        android:icon="@drawable/ic_attach_money_white_48dp"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_barCode"
         android:title="@string/action_codigoBarras"
         android:icon="@drawable/ic_crop_free_white_18dp"

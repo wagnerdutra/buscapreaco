@@ -266,7 +266,8 @@ public class EmpresasFragment extends BaseFragment {
                 if (empresaFiltro.size()>0) {
                     Intent intent = new Intent(getContext(),ListaEmpresa.class);
                     intent.putParcelableArrayListExtra("empresas", (ArrayList<? extends Parcelable>) empresaFiltro);
-                    intent.putExtra("title","Resultado");
+                    intent.putExtra("tipo", true);
+                    intent.putExtra("title","Empresas encontradas");
                     startActivity(intent);
                 }else
                     toast("Nenhuma empresa com o nome pesquisado");

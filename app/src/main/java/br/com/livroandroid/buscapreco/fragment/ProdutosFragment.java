@@ -176,8 +176,6 @@ public class ProdutosFragment extends BaseFragment {
                     p.setSelected(!p.isSelected());
                     updateActionModeTitle();
                     recyclerView.getAdapter().notifyDataSetChanged();
-                } else {
-                    toast("Toque e segure para compartilhar!");
                 }
             }
         };
@@ -310,6 +308,8 @@ public class ProdutosFragment extends BaseFragment {
 
                     if (produtosFiltro.size() > 0) {
                         Intent intent = new Intent(getContext(), ListaProduto.class);
+                        intent.putExtra("title", "Produtos encontrados");
+                        intent.putExtra("empresa", empresa.getNome());
                         intent.putParcelableArrayListExtra("produtos", (ArrayList<? extends Parcelable>) produtosFiltro);
                         startActivity(intent);
                     } else
@@ -378,6 +378,29 @@ public class ProdutosFragment extends BaseFragment {
         aboutPreco.show(ft, "dialog");
     }
 
+    private void produtosPromocao() {
+        List<Produto> produtos = produtoAdapter.getProdutos();
+        List<Produto> produtosFiltro = new ArrayList<>();
+
+        if (produtos!=null) {
+            for (int i = 0; i < produtos.size(); i++) {
+                if (produtos.get(i).getPrecoPromocao()>0) {
+                    produtosFiltro.add(produtos.get(i));
+                }
+            }
+
+            if (produtosFiltro.size() > 0) {
+                Intent intent = new Intent(getContext(), ListaProduto.class);
+                intent.putExtra("title", "Produtos em promoção");
+                intent.putExtra("empresa", empresa.getNome());
+                intent.putParcelableArrayListExtra("produtos", (ArrayList<? extends Parcelable>) produtosFiltro);
+                startActivity(intent);
+            } else
+                toast("Nenhuma promoção encontrada!");
+        } else
+            toast("Nenhum produto encontrado!");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -385,6 +408,9 @@ public class ProdutosFragment extends BaseFragment {
         if (id == R.id.action_barCode){
             scanFromFragment();
             return true;
+        }
+        if (id == R.id.action_promoProduto){
+            produtosPromocao();
         }
         return super.onOptionsItemSelected(item);
     }

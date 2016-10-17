@@ -23,4 +23,5 @@
     <string name="about_dialog_title">Informações</string>
     <string name="ok">Ok</string>
     <string name="action_codigoBarras">Ler código de barras</string>
+    <string name="produtos_em_promo_o">Produtos em promoção</string>
 </resources>

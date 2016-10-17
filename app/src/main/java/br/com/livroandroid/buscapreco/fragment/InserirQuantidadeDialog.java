@@ -2,6 +2,7 @@ package br.com.livroandroid.buscapreco.fragment;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
@@ -70,7 +71,7 @@ public class InserirQuantidadeDialog extends DialogFragment {
         etQuantidade = (EditText) view.findViewById(R.id.etQuantidade);
         inputLayout.setHint(title);
         view.findViewById(R.id.btOk).setOnClickListener(onClickOk());
-        setCancelable(false);
+        //setCancelable(false);
 
         return view;
     }
@@ -103,4 +104,9 @@ public class InserirQuantidadeDialog extends DialogFragment {
         };
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        callback.onQuantidadeUpdated(-1);
+    }
 }

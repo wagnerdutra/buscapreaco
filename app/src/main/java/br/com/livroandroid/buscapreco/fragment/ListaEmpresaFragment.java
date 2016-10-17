@@ -17,7 +17,8 @@ import java.util.List;
 import br.com.livroandroid.buscapreco.BuscaPrecoApplication;
 import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.activity.ProdutosActivity;
-import br.com.livroandroid.buscapreco.adapter.FavoritoAdapter;
+import br.com.livroandroid.buscapreco.adapter.EmpresaAdapter;
+import br.com.livroandroid.buscapreco.adapter.EmpresaFavAdapter;
 import br.com.livroandroid.buscapreco.domain.EmpresaService;
 import br.com.livroandroid.buscapreco.model.Empresa;
 
@@ -25,10 +26,12 @@ public class ListaEmpresaFragment extends BaseFragment {
 
     protected RecyclerView recyclerView;
     private List<Empresa> empresas;
-    private FavoritoAdapter empresaAdapter;
+    private EmpresaAdapter empresaAdapter;
+    private EmpresaFavAdapter empresaFavAdapter;
     private LinearLayoutManager linearLayoutManager;
     private View view;
     private String title;
+    private boolean tipo;
 
     public ListaEmpresaFragment() {
     }
@@ -38,6 +41,7 @@ public class ListaEmpresaFragment extends BaseFragment {
         Bundle savedInstanceState) {
         if (getArguments()!=null){
             title = (String) getArguments().get("title");
+            tipo = (boolean) getArguments().get("tipo");
             empresas = getArguments().getParcelableArrayList("empresas");
         }
         view = inflater.inflate(R.layout.fragment_lista_empresa, container, false);
@@ -47,33 +51,32 @@ public class ListaEmpresaFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         recyclerView.setHasFixedSize(true);
-        empresaAdapter = new FavoritoAdapter(getContext(), empresas, onClickEmpresa());
-        recyclerView.setAdapter(empresaAdapter);
+        if (tipo) {
+            empresaAdapter = new EmpresaAdapter(getContext(), empresas, onClickEmpresa());
+            recyclerView.setAdapter(empresaAdapter);
+        }else {
+            empresaFavAdapter = new EmpresaFavAdapter(getContext(), empresas, onClickEmpresaFav());
+            recyclerView.setAdapter(empresaFavAdapter);
+        }
+
         getActionBar().setTitle(title);
         return view;
     }
 
-    public void setEmpresa(List<Empresa> empresas){
-        if (empresas!=null){
-            this.empresas = empresas;
-            empresaAdapter = new FavoritoAdapter(getContext(), empresas, onClickEmpresa());
-            recyclerView.setAdapter(empresaAdapter);
-        }
-    }
+    private EmpresaAdapter.EmpresaOnClickListener onClickEmpresa() {
+        return new EmpresaAdapter.EmpresaOnClickListener() {
 
-    private FavoritoAdapter.EmpresaOnClickListener onClickEmpresa() {
-        return new FavoritoAdapter.EmpresaOnClickListener() {
             @Override
-            public void onClickEmpresa(FavoritoAdapter.EmpresasViewHolder holder, int idx) {
-                Empresa e = empresas.get(idx);
+            public void onClickEmpresa(EmpresaAdapter.EmpresasViewHolder holder, int idx) {
+                Empresa e = empresas.get(idx-1);
                 Intent intent = new Intent(getContext(),ProdutosActivity.class);
                 intent.putExtra("empresa",e);
                 startActivity(intent);
             }
 
             @Override
-            public void onClickCheckBox(FavoritoAdapter.EmpresasViewHolder holder, int idx, CheckBox cb) {
-                Empresa e = empresaAdapter.getEmpresas().get(idx);
+            public void onClickCheckBox(EmpresaAdapter.EmpresasViewHolder holder, int idx, CheckBox cb) {
+                Empresa e = empresaAdapter.getEmpresas().get(idx-1);
 
                 if (BuscaPrecoApplication.getInstance().isNeedToUpdate("empresa")){
                     BuscaPrecoApplication.getInstance().setNeedToUpdate("empresa",true);
@@ -91,7 +94,45 @@ public class ListaEmpresaFragment extends BaseFragment {
             }
 
             @Override
-            public void onClickInfo(FavoritoAdapter.EmpresasViewHolder holder, int idx) {
+            public void onClickInfo(EmpresaAdapter.EmpresasViewHolder holder, int idx) {
+                Empresa e = empresas.get(idx-1);
+                showAbout(e);
+            }
+        };
+    }
+
+    private EmpresaFavAdapter.EmpresaOnClickListener onClickEmpresaFav() {
+        return new EmpresaFavAdapter.EmpresaOnClickListener() {
+
+            @Override
+            public void onClickEmpresa(EmpresaFavAdapter.EmpresasViewHolder holder, int idx) {
+                Empresa e = empresas.get(idx);
+                Intent intent = new Intent(getContext(),ProdutosActivity.class);
+                intent.putExtra("empresa",e);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onClickCheckBox(EmpresaFavAdapter.EmpresasViewHolder holder, int idx, CheckBox cb) {
+                Empresa e = empresaFavAdapter.getEmpresas().get(idx);
+
+                if (BuscaPrecoApplication.getInstance().isNeedToUpdate("empresa")){
+                    BuscaPrecoApplication.getInstance().setNeedToUpdate("empresa",true);
+                }else
+                    BuscaPrecoApplication.getInstance().setNeedToUpdate("empresa",true);
+
+                if (cb.isChecked()) {
+                    EmpresaService.salvarEmpresaFav(getContext(), e);
+                    toast("Empresa adicionada aos favoritos!");
+                }
+                else {
+                    EmpresaService.deletarEmpresaFav(getContext(), e);
+                    toast("Empresa removida dos favoritos!");
+                }
+            }
+
+            @Override
+            public void onClickInfo(EmpresaFavAdapter.EmpresasViewHolder holder, int idx) {
                 Empresa e = empresas.get(idx);
                 showAbout(e);
             }

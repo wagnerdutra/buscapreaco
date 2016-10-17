@@ -126,12 +126,17 @@ public class SacolaProdutoFragment extends BaseFragment {
                         InserirQuantidadeDialog.show(getFragmentManager(),"Peso", new InserirQuantidadeDialog.Callback() {
                             @Override
                             public void onQuantidadeUpdated(float quandidade) {
-                                Produto p = produtoAdapter.getProdutos().get(idx);
-                                p.setQtd(quandidade);
-                                float total = Float.parseFloat(tvTotal.getText().toString());
-                                total = total + (quandidade * (Float.parseFloat(holder.pPreco.getText().toString())));
-                                tvTotal.setText(String.valueOf(total));
-                                recyclerView.getAdapter().notifyDataSetChanged();
+                                if (quandidade!=-1) {
+                                    Produto p = produtoAdapter.getProdutos().get(idx);
+                                    p.setQtd(quandidade);
+                                    float total = Float.parseFloat(tvTotal.getText().toString());
+                                    total = total + (quandidade * (Float.parseFloat(holder.pPreco.getText().toString())));
+                                    tvTotal.setText(String.valueOf(total));
+                                    recyclerView.getAdapter().notifyDataSetChanged();
+                                } else {
+                                    holder.checkBox.setChecked(false);
+                                    produtoAdapter.getProdutos().get(idx).setChecked(false);
+                                }
                             }
                         });
                     }else
@@ -139,12 +144,17 @@ public class SacolaProdutoFragment extends BaseFragment {
                         InserirQuantidadeDialog.show(getFragmentManager(),"Quantidade", new InserirQuantidadeDialog.Callback() {
                             @Override
                             public void onQuantidadeUpdated(float quandidade) {
-                                Produto p = produtoAdapter.getProdutos().get(idx);
-                                p.setQtd(quandidade);
-                                float total = Float.parseFloat(tvTotal.getText().toString());
-                                total = total + (quandidade * (Float.parseFloat(holder.pPreco.getText().toString())));
-                                tvTotal.setText(String.valueOf(total));
-                                recyclerView.getAdapter().notifyDataSetChanged();
+                                if (quandidade!=-1) {
+                                    Produto p = produtoAdapter.getProdutos().get(idx);
+                                    p.setQtd(quandidade);
+                                    float total = Float.parseFloat(tvTotal.getText().toString());
+                                    total = total + (quandidade * (Float.parseFloat(holder.pPreco.getText().toString())));
+                                    tvTotal.setText(String.valueOf(total));
+                                    recyclerView.getAdapter().notifyDataSetChanged();
+                                } else {
+                                    holder.checkBox.setChecked(false);
+                                    produtoAdapter.getProdutos().get(idx).setChecked(false);
+                                }
                             }
                         });
                     }

@@ -18,7 +18,6 @@ import br.com.livroandroid.buscapreco.R;
 import br.com.livroandroid.buscapreco.model.Produto;
 import livroandroid.lib.utils.Prefs;
 
-// Herda de RecyclerView.Adapter e declara o tipo genérico <ProdutoAdapter.ProdutosViewHolder>
 public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected static final String TAG = "livroandroid";
     private final List<Produto> Produtos;
@@ -45,8 +44,6 @@ public class ProdutoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
         RecyclerView.ViewHolder viewHolder;
-        // Este método cria uma subclasse de RecyclerView.ViewHolder
-        // Infla a view do layout
 
         if (viewType==0){
             View view = LayoutInflater.from(context).inflate(R.layout.layout_nome_cidade, viewGroup, false);

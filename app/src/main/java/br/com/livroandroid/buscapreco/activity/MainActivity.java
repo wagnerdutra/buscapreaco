@@ -139,6 +139,7 @@ public class MainActivity extends BaseActivity
             if (empresas.size()>0){
                 Intent intent = new Intent(getContext(),ListaEmpresa.class);
                 intent.putParcelableArrayListExtra("empresas", (ArrayList<? extends Parcelable>) empresas);
+                intent.putExtra("tipo",false);
                 intent.putExtra("title","Favoritos");
                 startActivity(intent);
             } else

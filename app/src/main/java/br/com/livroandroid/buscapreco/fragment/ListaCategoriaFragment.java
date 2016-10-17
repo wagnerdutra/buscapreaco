@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +29,6 @@ import br.com.livroandroid.buscapreco.activity.ProdutosActivity;
 import br.com.livroandroid.buscapreco.adapter.EmpresaAdapter;
 import br.com.livroandroid.buscapreco.domain.EmpresaService;
 import br.com.livroandroid.buscapreco.model.Empresa;
-import livroandroid.lib.utils.AndroidUtils;
 import livroandroid.lib.utils.Prefs;
 
 /**
@@ -42,7 +40,6 @@ public class ListaCategoriaFragment extends BaseFragment {
     private List<Empresa> empresas;
     private EmpresaAdapter empresaAdapter;
     private LinearLayoutManager linearLayoutManager;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private String categoria;
 
     @Override
@@ -59,31 +56,7 @@ public class ListaCategoriaFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         empresaAdapter = new EmpresaAdapter(getContext(), empresas, onClickEmpresa());
         recyclerView.setAdapter(empresaAdapter);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeToRefresh);
-        swipeRefreshLayout.setOnRefreshListener(OnRefreshListener());
-        swipeRefreshLayout.setColorSchemeResources(
-                R.color.blue,
-                R.color.green,
-                R.color.refresh_progress_3);
-
         return view;
-    }
-
-    private SwipeRefreshLayout.OnRefreshListener OnRefreshListener(){
-        return new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                //Valida se existe conexão
-                if (AndroidUtils.isNetworkAvailable(getContext())) {
-                    BuscaPrecoApplication.getInstance().setNeedToUpdate("empresa",true);
-                    taskEmpresas(true);
-                }else {
-                    swipeRefreshLayout.setRefreshing(false);
-                    alert(R.string.error_conexao_indisponivel);
-                }
-            }
-        };
     }
 
     @Override
@@ -160,10 +133,14 @@ public class ListaCategoriaFragment extends BaseFragment {
                 }else
                     BuscaPrecoApplication.getInstance().setNeedToUpdate("empresa",true);
 
-                if (cb.isChecked())
-                    EmpresaService.salvarEmpresaFav(getContext(),e);
-                else
-                    EmpresaService.deletarEmpresaFav(getContext(),e);
+                if (cb.isChecked()) {
+                    EmpresaService.salvarEmpresaFav(getContext(), e);
+                    toast("Empresa adicionada aos favoritos!");
+                }
+                else {
+                    EmpresaService.deletarEmpresaFav(getContext(), e);
+                    toast("Empresa removida dos favoritos!");
+                }
             }
 
             @Override

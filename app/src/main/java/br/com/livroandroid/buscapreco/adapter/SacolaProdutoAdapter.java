@@ -65,18 +65,18 @@ public class SacolaProdutoAdapter extends RecyclerView.Adapter<SacolaProdutoAdap
 
         holder.progressBar.setVisibility(View.VISIBLE);
         Picasso.with(context).load(p.getUrlFoto()).fit().into(holder.imagem,
-                new com.squareup.picasso.Callback(){
-                    @Override
-                    public void onSuccess() {
-                        holder.progressBar.setVisibility(View.GONE);
-                    }
+            new com.squareup.picasso.Callback(){
+                @Override
+                public void onSuccess() {
+                    holder.progressBar.setVisibility(View.GONE);
+                }
 
-                    @Override
-                    public void onError() {
-                        holder.progressBar.setVisibility(View.GONE);
-                        holder.imagem.setImageResource(R.drawable.semimagem);
-                    }
-                });
+                @Override
+                public void onError() {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.imagem.setImageResource(R.drawable.semimagem);
+                }
+            });
 
         if (onClickListener != null) {
             holder.checkBox.setOnClickListener(new View.OnClickListener() {
